@@ -2888,12 +2888,7 @@ function placeAt(world){
 function onSelectStart(C){
   C.lastSelect=performance.now();
   if (state.mode==='learn' && !C.isHand && !state.calibrating){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn') runBtn(t.action); else if (t?.kind==='rig') startRigMove(C, t.point); else learnTouch(t); return; }
-  if (C.isHand){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn'){ runBtn(t.action); return; }
-    // a hand that has something within reach of its fingers grabs it directly; a hand with nothing near points and pinches at a distance
-    if (state.calibrating || !t || !handRayFree(C)) return;
-    if (state.mode==='learn'){ learnTouch(t); return; }
-    if (!RAY_KINDS.includes(t.kind)) return;
-    if (t.point){ LINE.pinchY = board.worldToLocal(t.point.clone()).y - BOARD_TOP; LINE.pinchT = performance.now(); } }
+  if (C.isHand){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn') runBtn(t.action); return; }   // hands grab at the fingers; the ray only presses panel buttons
   if (state.calibrating){
     // the sign buttons keep working while you place the station (EXIT, language, ADJUST POSITION to cancel)
     rayFrom(C.c); const bt=firstTag(hits()); if (bt?.kind==='btn'){ runBtn(bt.action); return; }
@@ -2961,8 +2956,7 @@ function updateXR(){
     C.line.visible=true;
     rayFrom(C.c); const hs = hits(); const tag = firstTag(hs);
     C.tag = tag;
-    if (C.isHand){ const b = tag?.kind==='btn' || (!!tag && (state.mode==='learn' || RAY_KINDS.includes(tag.kind)) && !state.held && !state.tool && !state.boardHeld && handRayFree(C));
-      C.line.visible=b; C.dot.visible=b; if (b){ C.line.scale.z=tag.dist; C.dot.position.copy(hs[0].point); if (tag.kind!=='btn') matsFor(tag).forEach(m=>hov.add(m)); } continue; }
+    if (C.isHand){ const b = tag?.kind==='btn'; C.line.visible=b; C.dot.visible=b; if (b){ C.line.scale.z=tag.dist; C.dot.position.copy(hs[0].point); } continue; }
     C.line.scale.z = tag ? tag.dist : 0.6;
     if (tag){ C.dot.visible=true; C.dot.position.copy(hs[0].point); matsFor(tag).forEach(m=>hov.add(m)); } else C.dot.visible=false;
   }
@@ -2977,9 +2971,6 @@ function updateXR(){
 const handFactory = new XRHandModelFactory();
 const ghostHand = new THREE.MeshStandardMaterial({color:0xdfe8ee, transparent:true, opacity:0.32, roughness:0.6, depthWrite:false});
 const HANDS = [];
-// what a hand can reach with its pointing ray when nothing is close to the fingers
-const RAY_KINDS = ['dimm','part','tool','latch','slot','lever','plate','esd','wear','gloves','qd','board','cscrew','lscrew','screw'];
-function handRayFree(C){ const H=HANDS[C.idx]; if (!H?.active || !H.gp) return false; if (H.pinching && (state.held?.holder===H || state.holder===H || state.toolHolder===H || state.boardHeld===H)) return false; return !nearestTag(H.gp); }
 for (let i=0;i<2;i++){
   const h = renderer.xr.getHand(i);
   const model = handFactory.createHandModel(h, 'mesh'); h.add(model); scene.add(h);
@@ -2994,26 +2985,40 @@ let PINCH_HOLD_MS=120;   // the fingers must stay open this long to let go: a pa
 function nearestTag(p){
   // closest pickable within reach of the pinch point. What the current step needs wins when it is close,
   // so a pinch in a crowded area (latches, DIMM slots) takes the right part. The board and the sign only count when nothing else is near.
-  let best=null, bd=REACH, want=null, wd=REACH*1.4, brd=null, sign=null, ctrl=null, cd=0.015;
+  let best=null, bd=REACH, want=null, wd=REACH, brd=null, sign=null, ctrl=null, cd=0.015;
   for (const o of pickables){
     const u=o.userData; if (!u.kind || u.kind==='btn' || !pickOK(o, true, false)) continue;
     o.updateWorldMatrix(true,false); _bx.setFromObject(o); const d=_bx.distanceToPoint(p);
-    if (u.kind==='board'){ if (d<0.012) brd={...u, point:p.clone()}; if (!(stepWants(u) && d<wd)) continue; }
+    if (u.kind==='board'){ if (d<0.012) brd={...u, point:p.clone(), obj:o}; if (!(stepWants(u) && d<wd)) continue; }
     if (u.kind==='rig'){ if (d<0.02) sign={...u, point:p.clone()}; continue; }
     if (LINE.on && u.kind==='slot' && S[u.slot]?.occupied) continue;   // a filled slot is represented by its DIMM
-    if (LINE.on && ['latch','lever','plate'].includes(u.kind) && d<cd){ cd=d; ctrl={...u, point:p.clone()}; }
-    if (stepWants(u) && d<wd){ wd=d; want={...u, point:p.clone()}; }
-    if (d<bd){ bd=d; best={...u, point:p.clone()}; }
+    if (LINE.on && ['latch','lever','plate'].includes(u.kind) && d<cd){ cd=d; ctrl={...u, point:p.clone(), obj:o}; }
+    if (stepWants(u) && d<wd){ wd=d; want={...u, point:p.clone(), obj:o}; }
+    if (d<bd){ bd=d; best={...u, point:p.clone(), obj:o}; }
   }
   // pinch on the edge band of the board (2.5 cm) takes the board, even with slots and latches close by
   if (!state.held && state.station===1 && !state.done && state.mode!=='learn' && pickOK(pcb,true,false)){
     const bl=board.worldToLocal(p.clone()), dy=Math.abs(bl.y-BOARD_TOP);
     const inOut = (x,z)=>{ let c=false; for (let i=0,j=BOARD_OUTLINE.length-1;i<BOARD_OUTLINE.length;j=i++){ const [xi,zi]=BOARD_OUTLINE[i], [xj,zj]=BOARD_OUTLINE[j]; if ((zi>z)!==(zj>z) && x < (xj-xi)*(z-zi)/(zj-zi)+xi) c=!c; } return c; };
     let ed=1; for (let i=0,j=BOARD_OUTLINE.length-1;i<BOARD_OUTLINE.length;j=i++){ const [ax,az]=BOARD_OUTLINE[j], [bx,bz]=BOARD_OUTLINE[i], vx=bx-ax, vz=bz-az, t=Math.max(0,Math.min(1,((bl.x-ax)*vx+(bl.z-az)*vz)/(vx*vx+vz*vz))); ed=Math.min(ed, Math.hypot(bl.x-ax-t*vx, bl.z-az-t*vz)); }
-    if (dy<0.04 && ed<0.025 && (inOut(bl.x,bl.z) || ed<0.015) && !(want && stepWants(want) && want.kind!=='board' && wd<0.03)) return {...pcb.userData, point:p.clone()};
+    if (dy<0.04 && ed<0.025 && (inOut(bl.x,bl.z) || ed<0.015) && !(want && stepWants(want) && want.kind!=='board' && wd<0.03)) return {...pcb.userData, point:p.clone(), obj:pcb};
   }
   if (ctrl && want && !['latch','lever','plate'].includes(want.kind)) return ctrl;
   return want || best || brd || sign;
+}
+// what a pinch takes right now: a yellow box around it, so the trainee sees it before pinching
+const HOVER_BOX = [0,1].map(()=>{ const g=new THREE.Group(); g.visible=false;
+  const m=new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial({color:0xffd27a, transparent:true, opacity:0.22, depthWrite:false}));
+  const e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1,1,1)), new THREE.LineBasicMaterial({color:0xffc94a, transparent:true, opacity:0.95}));
+  m.raycast=()=>{}; e.raycast=()=>{}; g.add(m,e); scene.add(g); return g; });
+const _hbB=new THREE.Box3(), _hbG=new THREE.Box3(), _hbI=new THREE.Matrix4(), _hbM=new THREE.Matrix4(), _hbC=new THREE.Vector3(), _hbS=new THREE.Vector3();
+function showHoverBox(k, obj){
+  const g=HOVER_BOX[k]; if (!g) return; if (!obj){ g.visible=false; return; }
+  obj.updateWorldMatrix(true,true); _hbI.copy(obj.matrixWorld).invert(); _hbB.makeEmpty();
+  obj.traverse(c=>{ if (!c.isMesh || !c.geometry) return; if (!c.geometry.boundingBox) c.geometry.computeBoundingBox(); _hbG.copy(c.geometry.boundingBox).applyMatrix4(_hbM.multiplyMatrices(_hbI, c.matrixWorld)); _hbB.union(_hbG); });
+  if (_hbB.isEmpty()){ g.visible=false; return; }
+  _hbB.getCenter(_hbC); _hbB.getSize(_hbS).addScalar(0.004);
+  g.matrixAutoUpdate=false; g.matrix.copy(obj.matrixWorld).multiply(_hbM.compose(_hbC, new THREE.Quaternion(), _hbS)); g.visible=true;
 }
 function grabOffsets(H, obj){
   const wp=new THREE.Vector3(), wq=new THREE.Quaternion(); obj.getWorldPosition(wp); obj.getWorldQuaternion(wq);
@@ -3030,7 +3035,7 @@ function handPinchStart(H){
   if (state.calibrating){ tryPlaceAt(_gp.clone()); return; }
   if (state.boardHeld && state.boardHeld!==H && !state.boardHeld2 && typeof state.boardHeld==='object' && nearestTag(_gp)?.kind==='board'){ boardSecondHand(H); return; }
   if (state.held || state.tool || state.boardHeld || state.rigHolder){ if (nearestTag(_gp)) say('Your other hand is busy. Put down what you hold first.'); return; }
-  const t0 = nearestTag(_gp);
+  const t0 = nearestTag(_gp) || (H.cand && performance.now()-H.candT<120 ? H.cand : null);   // the closed pinch point decides; the box seen a moment ago helps when the fingers close just outside
   LINE.pinchY = board.worldToLocal(_gp.clone()).y - BOARD_TOP; LINE.pinchT = performance.now();
   if (t0?.kind==='rig'){ startRigMove(H, _gp.clone()); return; }
   if (state.mode==='learn') return learnTouch(t0);
@@ -3230,12 +3235,13 @@ function updateBoardHold(){
 const _wInv = new THREE.Matrix4();
 function updateHands(hov){
   for (const H of HANDS){
-    if (!H.active) continue;
+    if (!H.active){ showHoverBox(HANDS.indexOf(H), null); continue; }
     if (!H.ghosted){ let n=0; H.model.traverse(o=>{ if (o.isMesh){ o.material=ghostHand; n++; } }); if (n) H.ghosted=true; }
     const J=H.h.joints, T=J['thumb-tip'], I=J['index-finger-tip'], W=J['wrist'];
     if (!T || !I || !W) continue;
     // hand lost by the cameras while pinching (behind the board, out of view): let go after a short moment, never leave a part stuck in the air
     if (H.h.visible===false || I.visible===false || T.visible===false){
+      showHoverBox(HANDS.indexOf(H), null);
       if (H.pinching){ const now=performance.now(); H.lostT ??= now; if (now-H.lostT>400){ H.pinching=false; H.lostT=null; handPinchEnd(H); } }
       continue;
     }
@@ -3253,7 +3259,8 @@ function updateHands(hov){
     else if (H.pinching && gap>PINCH_OFF){ const now=performance.now(); H.openT ??= now; if (now-H.openT>=PINCH_HOLD_MS){ H.pinching=false; H.openT=null; handPinchEnd(H); } }
     else if (H.pinching) H.openT=null;
     if (H.pinching){ if (!H.openT) handHold(H); }   // while the fingers open, the part stays where it was: no jump when you let go
-    else { const t=nearestTag(_gp); matsFor(t).forEach(m=>hov.add(m)); pokeParts(H, tipPos); }
+    else { const t=nearestTag(_gp); H.cand=t; H.candT=performance.now(); matsFor(t).forEach(m=>hov.add(m)); pokeParts(H, tipPos); }
+    showHoverBox(HANDS.indexOf(H), !H.pinching && !state.calibrating && !state.held && !state.tool && !state.boardHeld && H.cand && H.cand.kind!=='rig' ? H.cand.obj : null);
     pokeButtons(H, tipPos);
   }
 }
@@ -3856,6 +3863,6 @@ function lineFromWelcome(){
 
 reset();
 document.fonts?.ready.then(()=>{ syncUI(); showTour(); });
-window.__trainer = { lineVirtual, LINE, lineStart, lineButton, lineSend, lineTest, lineReceive, lineEndShift, lineStats, lineDefects1, lineDefects2, lineStatus, lineUnitReset, fastBuild, flushAnims, sockNext, DEF, LINE_STEPS, lineNet, lineTick, pinchHold:(ms)=>{ PINCH_HOLD_MS=ms; }, facingYaw, legs, calRing, riserG, voiceTexts, speak, voiceKeys:()=>Object.keys(VOICE).length, get STEPS(){ return STEPS; }, get PH_RANGE(){ return PH_RANGE; }, get PH_STD(){ return PH_STD; }, BTN, lcScrews, DRIVES, firstTag, hits, rayFrom, msgSeen:()=>[...MSG_SEEN], setLang:(l)=>{ state.lang=l; }, updateSWI, swiSpec, swiCanvas, swiPanel, trMsg, untranslated:()=>[..._untr], phaseStats, phaseTime, resultLines, verdict, MSG, updateBoardHold, boardLetGo,learnTouch, LEARN, screwSound, SND, HANDS, updateHands, state, act, S, D, P, Q, CAB, HDR, CLIPS, TARGETS, BRD, FANS, PSUS, lidScrews, TOOLS, SK, SLOT_DEFS, LID_Y, inSock, camera, controls, station, esd, WEAR, renderer, poseOf, boardPivot, board, THREE, placeAt, hdrPos, setStation, camBusy:()=>!!camAnim, runBtn, signToMe, getAnchor:()=>stationAnchor, PERF, frameErr:()=>!!frameStep.warned, calRing, tryPlaceAt, headPos, ctrls, driverContact, anchorStation, followAnchor, panelCanvas, drawPanel, arrowFrom, arrowTo, stepWants, nearestTag, magnet, RIG_CUSTOM, rig, TOUR, tourLabels, pasteAt, endStroke, rig};
+window.__trainer = { HOVER_BOX, showHoverBox, lineVirtual, LINE, lineStart, lineButton, lineSend, lineTest, lineReceive, lineEndShift, lineStats, lineDefects1, lineDefects2, lineStatus, lineUnitReset, fastBuild, flushAnims, sockNext, DEF, LINE_STEPS, lineNet, lineTick, pinchHold:(ms)=>{ PINCH_HOLD_MS=ms; }, facingYaw, legs, calRing, riserG, voiceTexts, speak, voiceKeys:()=>Object.keys(VOICE).length, get STEPS(){ return STEPS; }, get PH_RANGE(){ return PH_RANGE; }, get PH_STD(){ return PH_STD; }, BTN, lcScrews, DRIVES, firstTag, hits, rayFrom, msgSeen:()=>[...MSG_SEEN], setLang:(l)=>{ state.lang=l; }, updateSWI, swiSpec, swiCanvas, swiPanel, trMsg, untranslated:()=>[..._untr], phaseStats, phaseTime, resultLines, verdict, MSG, updateBoardHold, boardLetGo,learnTouch, LEARN, screwSound, SND, HANDS, updateHands, state, act, S, D, P, Q, CAB, HDR, CLIPS, TARGETS, BRD, FANS, PSUS, lidScrews, TOOLS, SK, SLOT_DEFS, LID_Y, inSock, camera, controls, station, esd, WEAR, renderer, poseOf, boardPivot, board, THREE, placeAt, hdrPos, setStation, camBusy:()=>!!camAnim, runBtn, signToMe, getAnchor:()=>stationAnchor, PERF, frameErr:()=>!!frameStep.warned, calRing, tryPlaceAt, headPos, ctrls, driverContact, anchorStation, followAnchor, panelCanvas, drawPanel, arrowFrom, arrowTo, stepWants, nearestTag, magnet, RIG_CUSTOM, rig, TOUR, tourLabels, pasteAt, endStroke, rig};
 </script>
 </body></html>
