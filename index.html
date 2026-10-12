@@ -552,18 +552,23 @@ function makeDimm(id, capGB=64){
   return {id, group:g, pcbMat, hit, orient:0, state:'tray', slot:null, cap:capGB};
 }
 // ESD foam trays: 8 DIMMs of 64 GB and 16 DIMMs of 32 GB, each foam labeled with its capacity
-const FOAM_X = 0.39, FOAM_Z = -0.06, FOAM2_X = 0.425, FOAM2_Z = 0.10;
+const FOAM_X = 0.39, FOAM_Z = -0.085, FOAM2_X = 0.425, FOAM2_Z = 0.125;
 const foam = new THREE.Group(); station.add(foam);
 const foamA = box(0.21, 0.03, 0.16, M(0x18191b,{r:0.95})); foamA.position.set(FOAM_X, TABLE_Y+0.018, FOAM_Z); foam.add(foamA);
-const foamB = box(0.32, 0.03, 0.16, M(0x18191b,{r:0.95})); foamB.position.set(FOAM2_X, TABLE_Y+0.018, FOAM2_Z); foam.add(foamB);
+const foamB = box(0.38, 0.03, 0.16, M(0x18191b,{r:0.95})); foamB.position.set(FOAM2_X, TABLE_Y+0.018, FOAM2_Z); foam.add(foamB);
 const FOAM_TOP = TABLE_Y+0.033;
+// each capacity has its own ESD container: colored rim (blue 64 GB, green 32 GB) with a gap between them
+for (const [x,z,w,col] of [[FOAM_X,FOAM_Z,0.21,0x2f6fd1],[FOAM2_X,FOAM2_Z,0.38,0x2f9a5a]]){ const rm=M(col,{r:0.6}), W=w+0.016, Dp=0.176;
+  const bs=box(W,0.004,Dp,M(0x2a2d31,{r:0.9})); bs.position.set(x, TABLE_Y+0.002, z); foam.add(bs);
+  for (const sx of [-1,1]){ const r=box(0.008,0.026,Dp,rm); r.position.set(x+sx*(W/2-0.004), TABLE_Y+0.013, z); foam.add(r); }
+  for (const sz of [-1,1]){ const r=box(W,0.026,0.008,rm); r.position.set(x, TABLE_Y+0.013, z+sz*(Dp/2-0.004)); foam.add(r); } }
 const foamTag = (t,col) => canvasTex(256,64,(g)=>{ g.fillStyle=col; g.fillRect(0,0,256,64); g.fillStyle='#ffffff'; g.font='700 40px '+'"Barlow Condensed", "Arial Narrow", sans-serif'; g.textAlign='center'; g.fillText(t,128,46); });
-{ const a=new THREE.Mesh(new THREE.PlaneGeometry(0.06,0.015), new THREE.MeshBasicMaterial({map:foamTag('64 GB','#2f6fd1')})); a.position.set(FOAM_X, TABLE_Y+0.018, FOAM_Z+0.0805); foam.add(a);
-  const b=new THREE.Mesh(new THREE.PlaneGeometry(0.06,0.015), new THREE.MeshBasicMaterial({map:foamTag('32 GB','#2f9a5a')})); b.position.set(FOAM2_X, TABLE_Y+0.018, FOAM2_Z+0.0805); foam.add(b); }
+{ const a=new THREE.Mesh(new THREE.PlaneGeometry(0.08,0.02), new THREE.MeshBasicMaterial({map:foamTag('64 GB','#2f6fd1')})); a.position.set(FOAM_X, TABLE_Y+0.014, FOAM_Z+0.0885); foam.add(a);
+  const b=new THREE.Mesh(new THREE.PlaneGeometry(0.08,0.02), new THREE.MeshBasicMaterial({map:foamTag('32 GB','#2f9a5a')})); b.position.set(FOAM2_X, TABLE_Y+0.014, FOAM2_Z+0.0885); foam.add(b); }
 const STARTS = [0,1,0,0,1,0,1,1, 1,0,0,1,0,1,1,0,0,0,1,0,1,1,0,1];   // some DIMMs start facing the wrong way on purpose
 const D = {}, TRAY = {};
 STARTS.forEach((st,i)=>{ const id='d'+(i+1), big=i<8; D[id]=makeDimm(id, big?64:32);
-  TRAY[id] = big ? {x:FOAM_X-0.0875+i*0.025, z:FOAM_Z, start:st} : {x:FOAM2_X-0.1425+(i-8)*0.019, z:FOAM2_Z, start:st}; });
+  TRAY[id] = big ? {x:FOAM_X-0.0875+i*0.025, z:FOAM_Z, start:st} : {x:FOAM2_X-0.1725+(i-8)*0.023, z:FOAM2_Z, start:st}; });
 const ghost = makeGhost();
 function makeGhost(){
   const g = new THREE.Mesh(new THREE.BoxGeometry(DIMM_T*2.5, DIMM_H, DIMM_L), new THREE.MeshBasicMaterial({color:0x47c08a, transparent:true, opacity:0.28, depthWrite:false}));
@@ -593,7 +598,7 @@ function toTray(d){
   (d.parentObj || station).attach(d.group);
   d.state='tray'; d.slot=null; setOrient(d);
   if (d.kind && d.kind!=='dimm'){ d.group.position.copy(d.home); return; }
-  d.group.position.set(TRAY[d.id].x, FOAM_TOP-0.009, TRAY[d.id].z ?? FOAM_Z);
+  d.group.position.set(TRAY[d.id].x, FOAM_TOP-0.004, TRAY[d.id].z ?? FOAM_Z);   // 27 mm of each DIMM stands out of the foam, easy to pinch
 }
 
 /* ---------- CPUs, low-profile heatsinks, tools ---------- */
@@ -1948,7 +1953,7 @@ const act = {
     if (lineOn){ if (LINE.hdr[hid] && LINE.hdr[hid]!==d.id) return false; if (fam(CAB[H.cable])!==fam(d)) return false; }   // a plug only fits its own kind of connector, and not a busy one
     if (H.cable!==d.id && !lineOn){ fail(`Wrong connector. The ${d.name} goes to the ${HDR[d.dest].label}. ${d.flat?'Match the numbers.':'Match the colors.'}`); return false; }
     if (d.n===2 && poseOf(d).orient!==0 && !lineOn){ fail('Pin 1 does not match. The red stripe must be on the same side as the red triangle on the header. Rotate the connector.'); return false; }
-    if (lineOn){ LINE.unit.wire[d.id]=hid; if (d.n===2 && poseOf(d).orient!==0) LINE.unit.rev.add(d.id); else LINE.unit.rev.delete(d.id); LINE.hdr[hid]=d.id; }
+    if (lineOn && LINE.unit){ LINE.unit.wire[d.id]=hid; if (d.n===2 && poseOf(d).orient!==0) LINE.unit.rev.add(d.id); else LINE.unit.rev.delete(d.id); LINE.hdr[hid]=d.id; }
     const miss=d.route.filter(k=>!d.visited.includes(k));
     if (miss.length){ fail(`Route the cable through ${miss.length>1 ? 'clips '+miss.slice(0,-1).join(', ')+' and '+miss[miss.length-1] : 'clip '+miss[0]} before you plug it in.`); return false; }
     state.held=null; state.holder=null; state.snap=null; d.state='seated';
@@ -2492,7 +2497,7 @@ function swiSpec(s){
     case 'latch': case 'close': { const x=S[s.slot].x; const a=BL3(x,BOARD_TOP+0.02,SLOT_L/2+0.004), b=BL3(x,BOARD_TOP+0.02,-SLOT_L/2-0.004);
       return {take:{...boardWide, marks:[mk(BL3(x,BOARD_TOP,0),'','#f2b134')]}, place:{c:BL3(x,BOARD_TOP,0), w:0.2, dir:top, marks:[mk(a,''),mk(b,'')]}, cap:'touch', cap1:'where'}; }
     case 'insert': { const p=BL3(S[s.slot].x,BOARD_TOP+0.01,0), dm=Object.values(D).filter(d=>d.state==='tray' && d.cap===S[s.slot].cap)[0], big=S[s.slot].cap===64;
-      const fc=W3(big?FOAM_X:FOAM2_X, FOAM_TOP, big?FOAM_Z:FOAM2_Z); return {take:{c:fc, w:big?0.26:0.36, dir:dirSt(0,1,0.55), marks:dm?[mk(topOf(dm.group), `${dm.cap} GB`, '#f2b134')]:[]}, place:{c:p, w:0.2, dir:top, marks:[mk(p,s.slot)]}, cap:'place'}; }
+      const fc=W3(big?FOAM_X:FOAM2_X, FOAM_TOP, big?FOAM_Z:FOAM2_Z); return {take:{c:fc, w:big?0.30:0.46, dir:dirSt(0,1,0.55), marks:dm?[mk(topOf(dm.group), `${dm.cap} GB`, '#f2b134')]:[]}, place:{c:p, w:0.2, dir:top, marks:[mk(p,s.slot)]}, cap:'place'}; }
     case 'inspect': return {take:{...boardWide, marks:[]}, place:{c:BL3(0,BOARD_TOP,0), w:0.3, dir:dirSt(0,0.45,1), marks:[]}, cap:'check', cap1:'where'};
     case 's2board': { const p=W3(BOARD_IN.x,BOARD_IN.y,BOARD_IN.z); return {take:take(pcb,0.5), place:{c:p, w:0.8, dir:dirSt(0,1,0.8), marks:[mk(p,'')]}, cap:'place'}; }
     case 'psu': { const T=Object.values(TARGETS).filter(T=>T.kind==='psu'); const c=T.reduce((a,t)=>a.add(W3(t.pos.x,t.pos.y,t.pos.z)),V3(0,0,0)).multiplyScalar(1/T.length);
@@ -2839,7 +2844,7 @@ for (let i=0;i<2;i++){
   const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,-1)]), new THREE.LineBasicMaterial({color:0xf2b134, transparent:true, opacity:0.8}));
   line.scale.z = 0.6; c.add(line);
   const dot = new THREE.Mesh(new THREE.SphereGeometry(0.004,12,8), new THREE.MeshBasicMaterial({color:0xf2b134})); dot.visible=false; scene.add(dot);
-  const C = {c, line, dot, tag:null, isHand:false};
+  const C = {c, line, dot, tag:null, isHand:false, idx:i};
   c.addEventListener('connected', e=>{ C.isHand = !!e.data?.hand; C.on=true; try{ drawPanel(); }catch(err){} });
   c.addEventListener('disconnected', ()=>{ C.isHand=false; C.on=false; try{ drawPanel(); }catch(err){} });
   c.addEventListener('selectstart', ()=>onSelectStart(C));
@@ -2883,7 +2888,12 @@ function placeAt(world){
 function onSelectStart(C){
   C.lastSelect=performance.now();
   if (state.mode==='learn' && !C.isHand && !state.calibrating){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn') runBtn(t.action); else if (t?.kind==='rig') startRigMove(C, t.point); else learnTouch(t); return; }
-  if (C.isHand){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn') runBtn(t.action); return; }   // hands grab directly; the ray only presses panel buttons
+  if (C.isHand){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn'){ runBtn(t.action); return; }
+    // a hand that has something within reach of its fingers grabs it directly; a hand with nothing near points and pinches at a distance
+    if (state.calibrating || !t || !handRayFree(C)) return;
+    if (state.mode==='learn'){ learnTouch(t); return; }
+    if (!RAY_KINDS.includes(t.kind)) return;
+    if (t.point){ LINE.pinchY = board.worldToLocal(t.point.clone()).y - BOARD_TOP; LINE.pinchT = performance.now(); } }
   if (state.calibrating){
     // the sign buttons keep working while you place the station (EXIT, language, ADJUST POSITION to cancel)
     rayFrom(C.c); const bt=firstTag(hits()); if (bt?.kind==='btn'){ runBtn(bt.action); return; }
@@ -2951,7 +2961,8 @@ function updateXR(){
     C.line.visible=true;
     rayFrom(C.c); const hs = hits(); const tag = firstTag(hs);
     C.tag = tag;
-    if (C.isHand){ const b = tag?.kind==='btn'; C.line.visible=b; C.dot.visible=b; if (b){ C.line.scale.z=tag.dist; C.dot.position.copy(hs[0].point); } continue; }
+    if (C.isHand){ const b = tag?.kind==='btn' || (!!tag && (state.mode==='learn' || RAY_KINDS.includes(tag.kind)) && !state.held && !state.tool && !state.boardHeld && handRayFree(C));
+      C.line.visible=b; C.dot.visible=b; if (b){ C.line.scale.z=tag.dist; C.dot.position.copy(hs[0].point); if (tag.kind!=='btn') matsFor(tag).forEach(m=>hov.add(m)); } continue; }
     C.line.scale.z = tag ? tag.dist : 0.6;
     if (tag){ C.dot.visible=true; C.dot.position.copy(hs[0].point); matsFor(tag).forEach(m=>hov.add(m)); } else C.dot.visible=false;
   }
@@ -2966,6 +2977,9 @@ function updateXR(){
 const handFactory = new XRHandModelFactory();
 const ghostHand = new THREE.MeshStandardMaterial({color:0xdfe8ee, transparent:true, opacity:0.32, roughness:0.6, depthWrite:false});
 const HANDS = [];
+// what a hand can reach with its pointing ray when nothing is close to the fingers
+const RAY_KINDS = ['dimm','part','tool','latch','slot','lever','plate','esd','wear','gloves','qd','board','cscrew','lscrew','screw'];
+function handRayFree(C){ const H=HANDS[C.idx]; if (!H?.active || !H.gp) return false; if (H.pinching && (state.held?.holder===H || state.holder===H || state.toolHolder===H || state.boardHeld===H)) return false; return !nearestTag(H.gp); }
 for (let i=0;i<2;i++){
   const h = renderer.xr.getHand(i);
   const model = handFactory.createHandModel(h, 'mesh'); h.add(model); scene.add(h);
@@ -2980,12 +2994,14 @@ let PINCH_HOLD_MS=120;   // the fingers must stay open this long to let go: a pa
 function nearestTag(p){
   // closest pickable within reach of the pinch point. What the current step needs wins when it is close,
   // so a pinch in a crowded area (latches, DIMM slots) takes the right part. The board and the sign only count when nothing else is near.
-  let best=null, bd=REACH, want=null, wd=REACH*1.4, brd=null, sign=null;
+  let best=null, bd=REACH, want=null, wd=REACH*1.4, brd=null, sign=null, ctrl=null, cd=0.015;
   for (const o of pickables){
     const u=o.userData; if (!u.kind || u.kind==='btn' || !pickOK(o, true, false)) continue;
     o.updateWorldMatrix(true,false); _bx.setFromObject(o); const d=_bx.distanceToPoint(p);
     if (u.kind==='board'){ if (d<0.012) brd={...u, point:p.clone()}; if (!(stepWants(u) && d<wd)) continue; }
     if (u.kind==='rig'){ if (d<0.02) sign={...u, point:p.clone()}; continue; }
+    if (LINE.on && u.kind==='slot' && S[u.slot]?.occupied) continue;   // a filled slot is represented by its DIMM
+    if (LINE.on && ['latch','lever','plate'].includes(u.kind) && d<cd){ cd=d; ctrl={...u, point:p.clone()}; }
     if (stepWants(u) && d<wd){ wd=d; want={...u, point:p.clone()}; }
     if (d<bd){ bd=d; best={...u, point:p.clone()}; }
   }
@@ -2996,6 +3012,7 @@ function nearestTag(p){
     let ed=1; for (let i=0,j=BOARD_OUTLINE.length-1;i<BOARD_OUTLINE.length;j=i++){ const [ax,az]=BOARD_OUTLINE[j], [bx,bz]=BOARD_OUTLINE[i], vx=bx-ax, vz=bz-az, t=Math.max(0,Math.min(1,((bl.x-ax)*vx+(bl.z-az)*vz)/(vx*vx+vz*vz))); ed=Math.min(ed, Math.hypot(bl.x-ax-t*vx, bl.z-az-t*vz)); }
     if (dy<0.04 && ed<0.025 && (inOut(bl.x,bl.z) || ed<0.015) && !(want && stepWants(want) && want.kind!=='board' && wd<0.03)) return {...pcb.userData, point:p.clone()};
   }
+  if (ctrl && want && !['latch','lever','plate'].includes(want.kind)) return ctrl;
   return want || best || brd || sign;
 }
 function grabOffsets(H, obj){
@@ -3014,6 +3031,7 @@ function handPinchStart(H){
   if (state.boardHeld && state.boardHeld!==H && !state.boardHeld2 && typeof state.boardHeld==='object' && nearestTag(_gp)?.kind==='board'){ boardSecondHand(H); return; }
   if (state.held || state.tool || state.boardHeld || state.rigHolder){ if (nearestTag(_gp)) say('Your other hand is busy. Put down what you hold first.'); return; }
   const t0 = nearestTag(_gp);
+  LINE.pinchY = board.worldToLocal(_gp.clone()).y - BOARD_TOP; LINE.pinchT = performance.now();
   if (t0?.kind==='rig'){ startRigMove(H, _gp.clone()); return; }
   if (state.mode==='learn') return learnTouch(t0);
   const tag = normTag(t0);
@@ -3497,7 +3515,10 @@ function lineWrap(){
     if (state.held || state.tool || state.boardHeld) return false;
     lineTouch();
     if (!d.kind || d.kind==='dimm'){
-      if (d.state==='seated' && state.station===1) return lineUnseat(d);
+      if (d.state==='seated' && state.station===1){
+        // a pinch low on the module (latch height) works the latches; only a pinch on the top edge pulls the DIMM out
+        if (performance.now()-(LINE.pinchT||0) < 150 && LINE.pinchY < 0.024){ if (S[d.slot]?.ajar) lineReseat(d.slot); return false; }
+        return lineUnseat(d); }
       const i=lineIdx(s=>s.type==='insert' && S[s.slot].open && !S[s.slot].occupied) ?? -1, j = i>=0 ? i : lineIdx(s=>s.type==='insert');
       return lineAt(j, ()=>ACT0.grab(id)); }
     if (d.kind==='cpu'){ const i=STEPS.findIndex((s,k)=>s.type==='cpu' && sockNext(s.sock)===k); return lineAt(i, ()=>ACT0.grab(id)); }
