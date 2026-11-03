@@ -9,8 +9,8 @@
    Deliberately single dark theme: it matches the in-headset workshop and reads on any host background. */
 :root{
   --bg:#121619; --panel:#1b2125; --panel-2:#242c31; --line:#34414a;
-  --fg:#e7ecef; --muted:#9aa7af;
-  --accent:#f2b134; --accent-ink:#1a1405;
+  --fg:#f2f5f7; --muted:#c0c9cf;
+  --accent:#78BE20; --accent-ink:#0d1a02;
   --ok:#47c08a; --err:#f07161; --slot:#3b86f7;
   --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
   --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -19,7 +19,7 @@
 }
 [hidden]{display:none!important}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 var(--body);overflow:hidden}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 var(--body);overflow:hidden}
 #stage{position:fixed;inset:0}
 #stage canvas{display:block;width:100%;height:100%;touch-action:none}
 button{font:inherit;color:inherit;cursor:pointer}
@@ -27,22 +27,22 @@ button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outli
 
 .card>*{flex-shrink:0}
 .card{position:fixed;top:calc(16px + env(safe-area-inset-top,0px));left:16px;
-  width:min(360px,calc(100% - 32px));max-height:calc(100% - 132px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+  width:min(400px,calc(100% - 32px));max-height:calc(100% - 132px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
   overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;
   padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .eyebrow{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 h1{margin:0;font:700 30px/1 var(--display);letter-spacing:.01em;text-transform:uppercase;text-wrap:balance}
-h2{margin:0;font:600 21px/1.1 var(--display);letter-spacing:.02em;text-transform:uppercase;text-wrap:balance}
+h2{margin:0;font:700 25px/1.1 var(--display);letter-spacing:.02em;text-transform:uppercase;text-wrap:balance}
 .mode{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
 .seg{flex:1;background:transparent;border:0;padding:7px 8px;font-weight:500;color:var(--muted)}
 .seg.on{background:var(--panel-2);color:var(--fg);box-shadow:inset 0 -2px 0 var(--accent)}
 .now{display:flex;flex-direction:column;gap:6px;padding:12px;background:var(--panel-2);border-radius:4px;border-left:3px solid var(--accent)}
 .now.done-pass{border-left-color:var(--ok)} .now.done-fail{border-left-color:var(--err)}
-.stepno{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stepno{font:500 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .now p{margin:0}
 .swi summary{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);cursor:pointer;padding:4px 0}
 .swi img{display:block;width:100%;height:auto;border-radius:4px;margin-top:6px;background:#1b2125}
-.hint{color:var(--muted);font-size:13px}
+.hint{color:var(--muted);font-size:15px}
 .langs .seg{padding:5px 8px;font-size:13px}
 .msg{margin:0;min-height:1.45em;font-weight:500}
 .msg.err{color:var(--err)} .msg.ok{color:var(--ok)} .msg.info{color:var(--muted)}
@@ -50,17 +50,17 @@ h2{margin:0;font:600 21px/1.1 var(--display);letter-spacing:.02em;text-transform
 .actions button,.xrbar button{border:1px solid var(--line);background:var(--panel-2);border-radius:4px;padding:8px 12px;font-weight:600}
 .actions button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .actions button:disabled,.xrbar button:disabled{opacity:.4;cursor:not-allowed}
-.metrics{display:flex;gap:16px;font-size:13px;color:var(--muted)}
+.metrics{display:flex;gap:16px;font-size:15px;color:var(--muted)}
 .metrics b{font:500 15px/1 var(--mono);color:var(--fg);font-variant-numeric:tabular-nums;margin-left:4px}
 details{border-top:1px solid var(--line);padding-top:10px}
 summary{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer}
 ol{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;counter-reset:s}
-ol li{counter-increment:s;display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:13px}
+ol li{counter-increment:s;display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:15px}
 ol li::before{content:counter(s);font:500 11px/1 var(--mono);width:18px;height:18px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%}
 ol li.cur{color:var(--fg)} ol li.cur::before{border-color:var(--accent);color:var(--accent)}
 ol li.done{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
 ol li.done::before{content:"\2713";background:var(--ok);border-color:var(--ok);color:var(--bg)}
-.note{margin:0;font-size:12px;color:var(--muted)}
+.note{margin:0;font-size:13px;color:var(--muted)}
 .result{display:flex;flex-direction:column;gap:6px}
 .verdict{font:700 40px/1 var(--display);letter-spacing:.03em}
 .verdict.pass{color:var(--ok)} .verdict.fail{color:var(--err)} .verdict.prac{color:var(--accent)}
@@ -74,9 +74,9 @@ ol li.done::before{content:"\2713";background:var(--ok);border-color:var(--ok);c
 .verdictbtns{display:flex;gap:10px;margin-top:6px}
 .verdictbtns button{flex:1;border-radius:4px;padding:12px;font:700 26px/1 var(--display);letter-spacing:.05em;border:2px solid}
 .okb{background:var(--ok);border-color:var(--ok);color:var(--bg)} .nokb{background:transparent;border-color:var(--err);color:var(--err)}
-.xrnote{font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px 10px}
-.help{position:fixed;right:16px;top:calc(16px + env(safe-area-inset-top,0px));margin:0;max-width:260px;
-  font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
+.xrnote{font-size:14px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px 10px}
+.help{position:fixed;right:16px;top:calc(16px + env(safe-area-inset-top,0px));margin:0;max-width:280px;
+  font-size:14px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
 .welcome{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(10,13,15,.84);padding:16px}
 .wcard{max-width:500px;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .wcard h1{font-size:40px}
@@ -112,7 +112,7 @@ ol li.done::before{content:"\2713";background:var(--ok);border-color:var(--ok);c
     <h2 id="stepTitle">ESD check</h2>
     <p id="stepText"></p>
     <p class="hint" id="stepHint"></p>
-    <details class="swi" id="swi" open hidden><summary id="swiSum">Visual aid</summary><img id="swiImg" alt="Pictures of the part and of where it goes"></details>
+    <details class="swi" id="swi" open hidden><summary id="swiSum">Work instruction</summary><img id="swiImg" alt="Pictures of the part and of where it goes"></details>
     <div class="verdictbtns" id="chooseBtns" hidden>
       <button id="bAir" type="button">Air cooling</button>
       <button id="bLiq" type="button" class="primary">Liquid cooling</button>
@@ -134,7 +134,7 @@ ol li.done::before{content:"\2713";background:var(--ok);border-color:var(--ok);c
   <div class="metrics"><span>Time<b id="tTime">00:00</b></span><span>Errors<b id="tErr">0</b></span></div>
   <div id="lineRep" class="linerep" hidden></div>
   <details id="stepsBox" open><summary>Procedure</summary><ol id="steps"></ol></details>
-  <p class="note">Generic server board for training. Follow the SWI for the real population order of each product.</p>
+  <p class="note">Generic server board for training. Follow the work instruction for the real population order of each product.</p>
 </aside>
 
 <p class="help">Click a part to pick it up, then click where it goes. R rotates the part in your hand, or turns the board on the table when your hand is empty. Click the board to lift it; move the mouse to turn it and click again to set it down. Click a tool to take it, then click where to use it. With the syringe, press and drag across the CPU lid to draw each paste line. With a cable, move the plug through each clip, then click the header. Right-drag to look around.</p>
@@ -230,10 +230,11 @@ const INSPECT_STEP = {type:'inspect', title:'Final inspection', text:'Inspect ev
     hint:'Look along each row at eye level. A raised end or a latch that is not fully closed is a NOK.'};
 const CH_START = [
   {type:'s2board', title:'Install the board in the chassis', text:'Station 2. Pick up the board by its edges and lower it into the chassis over the four guide pins. The rear I/O ports must face the rear of the chassis, next to the power supplies.', hint:'The board arrives turned around. Rotate it 180 degrees so the I/O ports face the REAR I/O label.'},
+  {type:'brdPlace', title:'Place the 10 board screws', text:'Take one screw at a time from the screw bin next to the chassis and set it by hand in a hole of the board. Do the 10 holes. Do not tighten them yet.', hint:'While you hold a screw, a yellow ring marks each empty hole.'},
   {type:'brdScrews', title:'Tighten the 10 board screws', text:'Take the torque driver and tighten the 10 screws that hold the board to the chassis, in the order printed next to them. The order changes with every unit.', hint:'Read the number next to each screw before you tighten it. Do not work from memory.'},
   {type:'psu', title:'Install the two power supplies', text:'Slide each power supply into its rear bay, PS1 and PS2, gold edge connector first, with the handle and the orange latch to the rear. Push until the orange latch clicks. To remove one, press the orange latch and pull the handle.', hint:'One power supply sits on the table turned around. Rotate it 180 degrees so the gold edge goes in first.'},
 ];
-const HDD_STEP = {type:'hdd', title:'Install the eight drives', text:'Bays 0 and 1 take the 960 GB boot drives (blue handle). Bays 2 to 7 take the 3.84 TB data drives. Slide each carrier in with the connector first, toward the backplane, and the handle to the front.', hint:'Check the capacity label on every carrier. Bay numbers are printed on the front of the cage.'};
+const HDD_STEP = {type:'hdd', title:'Install the eight drives', text:'Bays 0 and 1 take the 960 GB boot drives (blue label). Bays 2 to 7 take the 3.84 TB data drives. Slide each carrier in from the front with the lever open, connector first, until it meets the backplane. Then close the lever until it clicks.', hint:'Check the capacity label on every carrier. Bay numbers are printed on the front of the cage.'};
 const RISER_STEP = {type:'risers', title:'Install the riser cards', text:'Lower each riser card into its board slot, RISER 1 and RISER 2, with the bracket and the blue latch to the rear. Then press down on the two blue touch points until the riser seats.', hint:'The number on the riser bracket matches the RISER number printed next to its slot. One riser sits on the table turned around.'};
 // the seven cables: every game connects them in a new order (the step objects stay, their cable changes)
 const CABLE_EN = {
@@ -288,11 +289,12 @@ function stepI18n(s){
     inspect:[['Inspección final','Inspecciona cada DIMM. Todos los clips deben estar cerrados y cada módulo nivelado y a la misma altura. Selecciona OK si la tarjeta está bien o NOK si encuentras un defecto.'],['最终检查','检查每条内存。所有卡扣必须完全闭合，每条内存必须水平且高度一致。主板良好选 OK，发现缺陷选 NOK。']],
     s2board:[['Instala la tarjeta en el chasis','Estación 2. Toma la tarjeta por los bordes y bájala dentro del chasis sobre los cuatro pines guía. Los puertos traseros de I/O van hacia atrás, junto a las fuentes.'],['将主板装入机箱','第2工位。握住主板边缘，放入机箱并对准四个导向销。后部 I/O 接口朝向机箱后方，靠近电源。']],
     psu:[['Instala las dos fuentes de poder','Desliza cada fuente en su bahía trasera, PS1 y PS2, con el conector de borde dorado primero y la manija y el seguro naranja hacia atrás. Empuja hasta que el seguro naranja haga clic. Para sacarla, presiona el seguro naranja y jala la manija.'],['安装两个电源','将每个电源从后方滑入其电源仓 PS1 和 PS2，金手指在前，把手和橙色卡扣朝后。推到橙色卡扣咔嗒一声。拆卸时按下橙色卡扣并拉动把手。']],
+    brdPlace:[['Coloca los 10 tornillos de la tarjeta','Toma un tornillo a la vez de la caja de tornillos junto al chasis y ponlo a mano en un hoyo de la tarjeta. Llena los 10 hoyos. Todavía no los aprietes.'],['放置主板的 10 颗螺丝','从机箱旁的螺丝盒每次取一颗螺丝，用手放进主板的一个孔里。放满 10 个孔。先不要拧紧。']],
     brdScrews:[['Aprieta los 10 tornillos de la tarjeta','Toma el desarmador de torque y aprieta los 10 tornillos que fijan la tarjeta al chasis, en el orden impreso junto a ellos. El orden cambia en cada unidad.'],['拧紧主板的 10 颗螺丝','拿起扭力起子，按照旁边印的顺序拧紧将主板固定在机箱上的 10 颗螺丝。每台机器的顺序都不同。']],
     risers:[['Instala las tarjetas riser','Baja cada riser en su slot de la tarjeta, RISER 1 y RISER 2, con el soporte y el seguro azul hacia atrás. Luego presiona los dos puntos azules hasta que el riser asiente.'],['安装转接卡','将每张转接卡放入主板上对应的插槽 RISER 1 和 RISER 2，支架和蓝色卡扣朝后。然后按压两个蓝色按压点，直到转接卡就位。']],
     lidLatch:[['Cierra el seguro de la tapa y ponle candado','Presiona el seguro de la tapa hasta que cierre y luego gira su candado un cuarto de vuelta a LOCK.'],['关闭上盖卡扣并上锁','按下上盖卡扣直到关闭，然后将锁旋转四分之一圈到 LOCK。']],
     fans:[['Instala los siete ventiladores','Coloca un ventilador en cada slot numerado, con la flecha de flujo de aire hacia atrás, hacia los CPUs, y la manija naranja hacia ti. Luego presiona cada ventilador con la mano hasta que su conector asiente en el header de la tarjeta.'],['安装七个风扇','在每个编号的风扇槽中放入一个风扇，气流箭头朝后指向 CPU，橙色把手朝向你。然后用手按压每个风扇，直到其接头插入主板插座。']],
-    hdd:[['Instala los ocho discos','Las bahías 0 y 1 llevan los discos de arranque de 960 GB (manija azul). Las bahías 2 a 7 llevan los discos de datos de 3.84 TB. Desliza cada carrier con el conector primero, hacia el backplane, y la manija al frente.'],['安装八块硬盘','0 号和 1 号仓位安装 960 GB 启动盘（蓝色把手）。2 到 7 号仓位安装 3.84 TB 数据盘。每个托架连接器一端先进入，朝向背板，把手朝前。']],
+    hdd:[['Instala los ocho discos','Las bahías 0 y 1 llevan los discos de arranque de 960 GB (etiqueta azul). Las bahías 2 a 7 llevan los discos de datos de 3.84 TB. Desliza cada carrier desde el frente con la palanca abierta, conector primero, hasta que llegue al backplane. Luego cierra la palanca hasta que haga click.'],['安装八块硬盘','0 号和 1 号仓位安装 960 GB 启动盘（蓝色标签）。2 到 7 号仓位安装 3.84 TB 数据盘。每个托架从前面插入，把手打开，连接器一端先进，直到碰到背板。然后合上把手，直到听到咔嗒声。']],
     cable:{ c1:[['Cable: alimentación del backplane','Toma el cable amarillo de alimentación del backplane desde la tarjeta. Pásalo por el clip 1, entre los ventiladores 2 y 3, y conéctalo al conector PWR amarillo del backplane.'],['线缆：背板电源','取出主板上的黄色背板电源线。穿过风扇 2 和风扇 3 之间的 1 号线夹，插入背板上的黄色 PWR 接口。']],
             c5:[['Cable: señal del backplane','Toma el cable de señal del backplane, etiquetado BP, desde la tarjeta. Pásalo por el clip 1 y conéctalo al conector SIG con marca roja del backplane.'],['线缆：背板信号','取出主板上标有 BP 的背板信号线。穿过 1 号线夹，插入背板上带红色标记的 SIG 接口。']],
             c2:[['Cable: SAS A','Toma el cable SAS con pestaña azul de la controladora PERC. Pásalo por la pared derecha, clips 2 y 3, y conéctalo al conector A del backplane.'],['线缆：SAS A','取出 PERC 控制器上带蓝色拉片的 SAS 线。沿右侧壁穿过 2 号和 3 号线夹，插入背板的 A 接口。']],
@@ -341,6 +343,7 @@ function hintI18n(s){
     inspect:['Mira cada fila a la altura de los ojos. Un extremo levantado o un clip que no cierra por completo es NOK.','在视线高度查看每一排。有一端翘起或卡扣未完全闭合即为 NOK。'],
     s2board:['La tarjeta llega volteada. Gírala 180 grados para que los puertos de I/O queden hacia la etiqueta REAR I/O.','主板放置方向是反的。将其旋转 180 度，使 I/O 接口朝向 REAR I/O 标签。'],
     psu:['Una fuente está volteada en la mesa. Gírala 180 grados para que el borde dorado entre primero.','有一个电源在桌上方向是反的。将其旋转 180 度，使金手指先插入。'],
+    brdPlace:['Mientras tienes un tornillo en la mano, un anillo amarillo marca cada hoyo vacío.','手里拿着螺丝时，每个空孔都有黄色圆环标记。'],
     brdScrews:['Lee el número junto a cada tornillo antes de apretarlo. No trabajes de memoria.','拧每颗螺丝前先看旁边的编号。不要凭记忆操作。'],
     risers:['El número del soporte del riser coincide con el número RISER impreso junto a su slot. Un riser está volteado en la mesa.','转接卡支架上的编号与插槽旁印的 RISER 编号一致。有一张转接卡在桌上方向是反的。'],
     lidLatch:['Una tapa sin seguro cerrado y con candado activa la alarma de tapa abierta.','卡扣未关闭或未上锁的上盖会触发开盖报警。'],
@@ -429,11 +432,11 @@ const grid = new THREE.GridHelper(8, 32, 0x2b353c, 0x222a2f); grid.visible = fal
   const ft=new THREE.CanvasTexture(fc); ft.colorSpace=THREE.SRGBColorSpace; ft.wrapS=ft.wrapT=THREE.RepeatWrapping; ft.repeat.set(12,12); ft.anisotropy=8;
   floor.material.map=ft; floor.material.needsUpdate=true;
   const lineM=new THREE.MeshBasicMaterial({color:'#d8b420'});
-  for (const x of [-2.4, 2.4]){ const l=new THREE.Mesh(new THREE.PlaneGeometry(0.08,6), lineM); l.rotation.x=-Math.PI/2; l.position.set(x,0.002,-0.4); room.add(l); }
+  for (const x of [-1.25, 1.25]){ const l=new THREE.Mesh(new THREE.PlaneGeometry(0.08,6), lineM); l.rotation.x=-Math.PI/2; l.position.set(x,0.002,-0.4); room.add(l); }
   const wallM=new THREE.MeshStandardMaterial({color:'#7d868e', roughness:0.95}), baseM=new THREE.MeshStandardMaterial({color:'#2b3036', roughness:0.8});
   const wall=(w,x,z,ry)=>{ const g=new THREE.Group(); const p=new THREE.Mesh(new THREE.PlaneGeometry(w,3.2), wallM); p.position.y=1.6; const b=new THREE.Mesh(new THREE.PlaneGeometry(w,0.15), baseM); b.position.set(0,0.075,0.002); g.add(p,b);
     for (let k=-w/2+1.2; k<w/2; k+=1.2){ const sp=new THREE.Mesh(new THREE.PlaneGeometry(0.012,3.0), baseM); sp.position.set(k,1.6,0.001); g.add(sp); } g.position.set(x,0,z); g.rotation.y=ry; room.add(g); };
-  wall(7, 0, -2.3, 0); wall(5, -3.5, 0.2, Math.PI/2); wall(5, 3.5, 0.2, -Math.PI/2);
+  wall(6, 0, -2.2, 0); wall(5, -3, 0.3, Math.PI/2); wall(5, 3, 0.3, -Math.PI/2);
   const sc=document.createElement('canvas'); sc.width=2048; sc.height=400; const sx=sc.getContext('2d');
   sx.fillStyle='#10283a'; sx.fillRect(0,0,2048,400); sx.strokeStyle='#7fd1ff'; sx.lineWidth=14; sx.strokeRect(14,14,2020,372);
   sx.textBaseline='middle';
@@ -443,7 +446,7 @@ const grid = new THREE.GridHelper(8, 32, 0x2b353c, 0x222a2f); grid.visible = fal
   sx.font=f1; sx.fillStyle='#ffffff'; sx.fillText('Technical Training', x0, 208);
   sx.font=f2; sx.fillStyle='#ffd27a'; sx.fillText('DOJO', x0+w1+gap, 205);
   const st=new THREE.CanvasTexture(sc); st.colorSpace=THREE.SRGBColorSpace; st.anisotropy=8;
-  const sign=new THREE.Mesh(new THREE.PlaneGeometry(3.0,0.586), new THREE.MeshBasicMaterial({map:st, toneMapped:false})); sign.position.set(0,2.5,-2.29); room.add(sign);
+  const sign=new THREE.Mesh(new THREE.PlaneGeometry(3.0,0.586), new THREE.MeshBasicMaterial({map:st, toneMapped:false})); sign.position.set(0,2.5,-2.19); room.add(sign);
   const glow=new THREE.MeshBasicMaterial({color:'#dfe9f2'});
   for (const [x,z] of [[-1.2,-0.8],[1.2,-0.8],[-1.2,1.2],[1.2,1.2]]){ const l=new THREE.Mesh(new THREE.PlaneGeometry(1.2,0.3), glow); l.rotation.x=Math.PI/2; l.position.set(x,3.1,z); room.add(l); }
   room.traverse(o=>{ if (o.isMesh) o.raycast=()=>{}; });
@@ -471,17 +474,17 @@ function silkscreen(){
   g.strokeStyle='rgba(120,190,150,.22)'; g.lineWidth=2;
   for (let i=0;i<70;i++){ const y=v(-0.105)+i*9; g.beginPath(); g.moveTo(u(-0.20),y); g.lineTo(u(0.20),y+((i%5)-2)*6); g.stroke(); }
   g.strokeStyle='#e9efe9'; g.fillStyle='#e9efe9'; g.lineWidth=3;
-  g.font='600 24px "IBM Plex Mono", monospace'; g.textAlign='center';
+  g.font='700 28px "IBM Plex Mono", monospace'; g.textAlign='center';
   for (const s of SLOT_DEFS){
     g.save(); g.translate(u(s.x), v(-0.081)); g.rotate(-Math.PI/2); g.fillText(s.id,0,8); g.restore();
     g.strokeRect(u(s.x-0.0045), v(-0.072), 0.009*K, 0.144*K);
   }
-  g.font='700 36px "IBM Plex Mono", monospace';
+  g.font='700 44px "IBM Plex Mono", monospace';
   for (const s of SOCKS){ g.fillText(s.id, u(s.x), v(-0.058));
     g.beginPath(); g.moveTo(u(s.x-0.036),v(-0.046)); g.lineTo(u(s.x-0.028),v(-0.046)); g.lineTo(u(s.x-0.036),v(-0.038)); g.closePath(); g.fill(); }
   g.font='500 22px "IBM Plex Mono", monospace';
   g.textAlign='left'; g.fillText('SRV-MB 2S  REV 1.0  TRAINING', u(0.0), v(-0.225)+22);
-  g.textAlign='center'; g.font='700 26px "IBM Plex Mono", monospace'; g.fillText('RISER1', u(0.035), v(-0.20)); g.fillText('RISER2', u(0.17), v(-0.196)); g.textAlign='left'; g.font='500 22px "IBM Plex Mono", monospace';
+  g.textAlign='center'; g.font='700 32px "IBM Plex Mono", monospace'; g.fillText('RISER1', u(0.035), v(-0.20)); g.fillText('RISER2', u(0.17), v(-0.196)); g.textAlign='left'; g.font='700 26px "IBM Plex Mono", monospace';
   g.fillText('PWR_BP', u(-0.075), v(0.083)); g.fillText('CTRL_PNL', u(-0.205), v(0.082)); g.fillText('BP_SIG', u(-0.04), v(0.0805)); g.fillText('VGA', u(-0.172), v(0.0995)); g.fillText('SATA_CD', u(-0.145), v(0.0805));
   g.textAlign='right'; g.fillText('ESD SENSITIVE', u(-0.03), v(-0.098));
   const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=8; return t;
@@ -574,7 +577,7 @@ for (const [lab,x] of [['J_PS1',-0.075],['J_PS2',-0.165]]){
   t.rotation.x=-Math.PI/2; t.position.set(x,BOARD_TOP+0.0004,-0.088); board.add(t); }
 // ten screws hold the board to the chassis; they go in at station 2 and their order changes every game
 const BRD_SCREW_POS = [[-0.15,-0.095],[-0.06,-0.095],[-0.105,0.09],[0.01,0.09],[0.105,0.09],[0.205,-0.12],[0.205,-0.19],[0.10,-0.10],[-0.03,-0.13],[0.015,-0.19]];
-const BSCREW_UP = BOARD_TOP+0.0075, BSCREW_DOWN = BOARD_TOP+0.0025;
+const BSCREW_UP = BOARD_TOP+0.0075, BSCREW_DOWN = BOARD_TOP+0.0025, _hmTmp = new THREE.Matrix4();
 const brdScrewG = new THREE.Group(); brdScrewG.visible=false; board.add(brdScrewG);
 const brdScrews = {};
 BRD_SCREW_POS.forEach(([x,z],i)=>{ const n=i+1;
@@ -584,8 +587,27 @@ BRD_SCREW_POS.forEach(([x,z],i)=>{ const n=i+1;
   const sl=box(0.0042,0.0005,0.001,M(0x2a2e31)); sl.position.y=0.0012; sg.add(sl); const s2=sl.clone(); s2.rotation.y=Math.PI/2; sg.add(s2);
   const hit=box(0.011,0.012,0.011,new THREE.MeshBasicMaterial()); hit.visible=false; hit.userData={kind:'bscrew', n}; sg.add(hit);
   const lab=new THREE.Mesh(new THREE.PlaneGeometry(0.0085,0.0085), new THREE.MeshBasicMaterial({map:digitC(n), transparent:true})); lab.rotation.x=-Math.PI/2; lab.position.set(x+0.0085,BOARD_TOP+0.0006,z); brdScrewG.add(lab);
-  brdScrews[n]={group:sg, mat, hit, lab, tight:false}; pickables.push(hit);
+  const hole=new THREE.Mesh(new THREE.CylinderGeometry(0.0016,0.0016,0.0008,12), M(0x0d0f10,{r:0.9})); hole.position.set(x,BOARD_TOP+0.0006,z); brdScrewG.add(hole);
+  const hh=box(0.012,0.01,0.012,new THREE.MeshBasicMaterial()); hh.visible=false; hh.position.set(x,BOARD_TOP+0.004,z); hh.userData={kind:'bhole', n}; brdScrewG.add(hh);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(0.0055,0.0009,6,20), new THREE.MeshBasicMaterial({color:0xffd27a})); ring.rotation.x=-Math.PI/2; ring.position.set(x,BOARD_TOP+0.0012,z); ring.visible=false; ring.raycast=()=>{}; brdScrewG.add(ring);
+  sg.visible=false;
+  brdScrews[n]={group:sg, mat, hit, lab, tight:false, placed:false, holeHit:hh, ring}; pickables.push(hit, hh);
 });
+// the screw bin of station 2 (as in the rack assembly): take one screw at a time with a pinch or a click
+const SBIN_P = V3(-0.28, TABLE_Y, 0.27);
+const sbinMat = M(0x3a4047,{r:0.6});
+const sbinG = new THREE.Group(); sbinG.position.copy(SBIN_P);
+{ const b=box(0.075,0.026,0.055,sbinMat); b.position.y=0.013; sbinG.add(b);
+  const inner=box(0.067,0.002,0.047,M(0x1c1f22,{r:0.8})); inner.position.y=0.0245; sbinG.add(inner);
+  const heads=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.0034,0.0034,0.0022,10), M(0x9aa3aa,{m:0.8,r:0.3}), 18);
+  for (let i=0;i<18;i++){ _hmTmp.makeRotationFromEuler(new THREE.Euler(Math.random()*0.8-0.4,0,Math.random()*0.8-0.4)); _hmTmp.setPosition(-0.026+(i%6)*0.0104+(Math.random()-0.5)*0.003, 0.0265+Math.random()*0.002, -0.016+Math.floor(i/6)*0.016+(Math.random()-0.5)*0.003); heads.setMatrixAt(i,_hmTmp); }
+  sbinG.add(heads);
+  const lab=new THREE.Mesh(new THREE.PlaneGeometry(0.07,0.0175), new THREE.MeshBasicMaterial({map:textTex('BOARD SCREWS',512,128,'#1c1f22','#ffffff',64)})); lab.position.set(0,0.013,0.0277); sbinG.add(lab);
+  const hit=box(0.08,0.04,0.06,new THREE.MeshBasicMaterial()); hit.visible=false; hit.position.y=0.018; hit.userData={kind:'sbin'}; sbinG.add(hit); pickables.push(hit); }
+const heldScrew = new THREE.Group(); heldScrew.visible=false;
+{ const mat=M(0x9aa3aa,{m:0.8,r:0.3}); heldScrew.add(new THREE.Mesh(new THREE.CylinderGeometry(0.0034,0.0034,0.0022,16),mat)); const th=new THREE.Mesh(new THREE.CylinderGeometry(0.0013,0.0013,0.006,8),mat); th.position.y=-0.004; heldScrew.add(th); heldScrew.traverse(o=>o.raycast=()=>{}); }
+function brdPlacedN(){ return Object.values(brdScrews).filter(x=>x.placed).length; }
+function showHoleRings(on){ for (const sc of Object.values(brdScrews)) sc.ring.visible = on && !sc.placed; }
 for (const [id,x] of [['c2',0.136],['c3',0.156]]){ const h=box(0.012,0.007,0.008,M(0x111315,{r:0.6})); h.position.set(x,BOARD_TOP+0.0105,-0.121); board.add(h); SRC[id]=h; }
 
 /* ---------- DIMM slots: black bodies, white latches on the slots populated first ---------- */
@@ -681,7 +703,7 @@ function fromBoard(p){ const v=p.clone(); board.localToWorld(v); return station.
 const boardYaw = () => state.boardYaw || 0;
 function toTray(d){
   (d.parentObj || station).attach(d.group);
-  d.state='tray'; d.slot=null; setOrient(d);
+  d.state='tray'; d.slot=null; setOrient(d); if (d.lever) d.lever.rotation.y=-0.65;
   if (d.kind && d.kind!=='dimm'){ d.group.position.copy(d.home); return; }
   d.group.position.set(TRAY[d.id].x, FOAM_TOP-0.004, TRAY[d.id].z ?? FOAM_Z);   // 27 mm of each DIMM stands out of the foam, easy to pinch
 }
@@ -861,12 +883,12 @@ const glovePuff = new THREE.Mesh(new THREE.SphereGeometry(0.014,16,10), M(0x7fb2
 const gHit = box(0.085,0.06,0.13,new THREE.MeshBasicMaterial()); gHit.visible=false; gHit.position.y=0.025; gHit.userData={kind:'gloves'}; gloveBox.add(gHit); pickables.push(gHit);
 
 /* ---------- Station 2: 1U chassis modeled on the reference server photos ---------- */
-const st2 = new THREE.Group(); st2.visible=false; station.add(st2);
+const st2 = new THREE.Group(); st2.visible=false; station.add(st2); st2.add(sbinG); scene.add(heldScrew);
 const FLOOR_Y = TABLE_Y+0.007, WALL_H = 0.043, CH_X = 0.10, CH_W = 0.434, CH_D = 0.70;
 const BOARD_IN = V3(0.10, FLOOR_Y+0.006, -0.115);
 const BOARD_STAGE = V3(-0.40, BOARD_TOP, 0.0);
 const chassisMat = M(0x9aa3aa,{m:0.6,r:0.45}), blackMat = M(0x1c1f22,{r:0.7}), orangeMat = M(0xf06a2a,{r:0.55}), blueTouch = M(0x6f8fd8,{r:0.5});
-function canvasTex(w,h,draw){ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d'),w,h); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t; }
+function canvasTex(w,h,draw){ const k = Math.max(w,h) <= 1024 ? 2 : 1, c=document.createElement('canvas'); c.width=w*k; c.height=h*k; const g=c.getContext('2d'); g.scale(k,k); draw(g,w,h); const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=8; return t; }
 function decal(w,h,tex,parent,x,y,z,rz=0){ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({map:tex, transparent:true, polygonOffset:true, polygonOffsetFactor:-2, polygonOffsetUnits:-4})); m.rotation.set(-Math.PI/2,0,rz); m.position.set(x,y,z); parent.add(m); return m; }
 function arrowTex(text){ return canvasTex(256,160,(q)=>{ q.fillStyle='#e7ecef'; q.fillRect(0,0,256,160); q.fillStyle='#121619'; q.beginPath(); q.moveTo(128,14); q.lineTo(186,74); q.lineTo(148,74); q.lineTo(148,120); q.lineTo(108,120); q.lineTo(108,74); q.lineTo(70,74); q.closePath(); q.fill(); q.font='700 30px "Barlow Condensed", "Arial Narrow", sans-serif'; q.textAlign='center'; q.fillText(text,128,150); }); }
 function textTex(text, w=256, h=64, bg='#1c1f22', fg='#e7ecef', size=36){ return canvasTex(w,h,(g)=>{ g.fillStyle=bg; g.fillRect(0,0,w,h); g.fillStyle=fg; g.font=`700 ${size}px "Barlow Condensed", "Arial Narrow", sans-serif`; g.textAlign='center'; g.textBaseline='middle'; g.fillText(text,w/2,h/2+2); }); }
@@ -957,7 +979,8 @@ const bpMat = M(0x1f5a3a,{r:0.5});
 { const bp=box(0.28,0.036,0.003,bpMat); bp.position.set(0.17,FLOOR_Y+0.02,0.126); st2.add(bp);
   const cov=box(0.28,0.002,0.20,blackMat); cov.position.set(0.17,FLOOR_Y+0.042,0.235); st2.add(cov);
   for (const x of [0.08,0.17,0.26]){ const pad=box(0.06,0.0012,0.075,M(0xb9c0c6,{m:0.5,r:0.5})); pad.position.set(x,FLOOR_Y+0.0436,0.24); st2.add(pad); }
-  decal(0.10,0.012, textTex('BACKPLANE RELEASE',512,64,'#1c1f22','#c9cfd4',34), st2, 0.17, FLOOR_Y+0.0433, 0.147);
+  decal(0.10,0.012, textTex('BACKPLANE RELEASE ↑',512,64,'#1c1f22','#7fb0e0',34), st2, 0.17, FLOOR_Y+0.0433, 0.155);
+  { const tab=box(0.014,0.012,0.006,M(0x3f72d6,{r:0.45})); tab.position.set(0.17,FLOOR_Y+0.046,0.128); st2.add(tab); const tb2=box(0.014,0.004,0.012,M(0x3f72d6,{r:0.45})); tb2.position.set(0.17,FLOOR_Y+0.0505,0.133); st2.add(tb2); }
   decal(0.014,0.014, textTex('A',64,64,'#e7ecef','#121619',52), st2, 0.035, FLOOR_Y+0.0433, 0.147);
   decal(0.014,0.014, textTex('B',64,64,'#e7ecef','#121619',52), st2, 0.305, FLOOR_Y+0.0433, 0.147);
   for (const [i,x] of [0.065,0.135,0.205,0.275].entries()) for (const [j,y] of [FLOOR_Y+0.0085, FLOOR_Y+0.0255].entries()){
@@ -1003,17 +1026,23 @@ const HDD_CAPS = [3840, 960, 3840, 3840, 3840, 960, 3840, 3840], HDD_START = [1,
 HDD_CAPS.forEach((c,i)=>{
   const g=new THREE.Group(), boot=c<1000;
   g.add(box(0.066,0.015,0.10,hddMat));
-  const handle=box(0.066,0.016,0.012,boot ? M(0x2f6fd1,{r:0.5}) : blackMat); handle.position.z=0.056; g.add(handle);
-  const led=box(0.004,0.003,0.002,M(0x47c08a,{r:0.4})); led.position.set(0.026,0.004,0.0625); g.add(led);
-  const tagT=canvasTex(256,64,(t)=>{ t.fillStyle=boot?'#2f6fd1':'#f2b134'; t.fillRect(0,0,256,64); t.fillStyle=boot?'#ffffff':'#121619'; t.font='700 40px '+DISPLAY; t.textAlign='center'; t.fillText(CAP_TXT(c),128,46); });
-  const tg=new THREE.Mesh(new THREE.PlaneGeometry(0.03,0.0075), new THREE.MeshBasicMaterial({map:tagT})); tg.position.set(-0.012,0,0.0625); g.add(tg);
+  for (const sx of [-0.0345,0.0345]){ const rail=box(0.004,0.016,0.10,M(0xc9cfd4,{m:0.8,r:0.3})); rail.position.x=sx; g.add(rail); }
+  const front=box(0.070,0.017,0.008,blackMat); front.position.z=0.053; g.add(front);
+  const ft=new THREE.Mesh(new THREE.PlaneGeometry(0.070,0.017), new THREE.MeshBasicMaterial({map:canvasTex(560,136,(q,w,h)=>{ q.fillStyle='#16191b'; q.fillRect(0,0,w,h); q.fillStyle='#050607'; for (let i=0;i<5;i++) q.fillRect(150+i*44,16,30,46);
+      q.strokeStyle='#f06a2a'; q.lineWidth=7; q.beginPath(); q.arc(58,92,20,0,7); q.stroke(); q.fillStyle='#2a2f33'; q.beginPath(); q.arc(58,92,12,0,7); q.fill(); })}));
+  ft.position.z=0.0572; g.add(ft);
+  // the lever: hinged on the right side of the carrier front, open while the drive slides in, closed with a click
+  const lev=new THREE.Group(); lev.position.set(0.030,-0.0015,0.0585); g.add(lev);
+  const lb=box(0.050,0.0075,0.004,blackMat); lb.position.x=-0.025; lev.add(lb);
+  const tagT=canvasTex(320,64,(t,w,h)=>{ t.fillStyle=boot?'#2f6fd1':'#d9dee2'; t.fillRect(0,0,w,h); t.fillStyle=boot?'#ffffff':'#121619'; t.font='700 44px "IBM Plex Mono", monospace'; t.textAlign='center'; t.textBaseline='middle'; t.fillText((boot?'BOOT ':'')+CAP_TXT(c),w/2,h/2+2); });
+  const tg=new THREE.Mesh(new THREE.PlaneGeometry(0.03,0.006), new THREE.MeshBasicMaterial({map:tagT})); tg.position.set(-0.021,0,0.0021); lev.add(tg);
   const conn=box(0.03,0.008,0.004,M(0x111315)); conn.position.set(0,0,-0.051); g.add(conn);
   decal(0.05,0.07, canvasTex(256,360,(t)=>{ t.fillStyle='#c9cfd4'; t.fillRect(0,0,256,360); t.fillStyle='#121619'; t.font='700 40px '+DISPLAY; t.textAlign='center'; t.fillText('2.5 IN SSD',128,70);
     t.fillStyle=boot?'#2f6fd1':'#f2b134'; t.fillRect(28,110,200,80); t.fillStyle=boot?'#ffffff':'#121619'; t.font='700 54px '+DISPLAY; t.fillText(CAP_TXT(c),128,170);
     t.fillStyle='#121619'; t.font='500 26px "IBM Plex Mono", monospace'; t.fillText(boot?'BOOT':'DATA',128,240); t.fillText('ESD SENSITIVE',128,320); }), g, 0,0.0076,-0.005);
   const hit=box(0.072,0.026,0.12,new THREE.MeshBasicMaterial()); hit.visible=false; hit.position.z=0.005; g.add(hit);
   const d=makePart2('hdd'+i,'hdd','Drive',2,g,hit,hddMat,HDD_START[i],V3(0.43+(i%4)*0.075,TABLE_Y+0.0085,i<4?-0.065:0.065),FLOOR_Y+0.065);
-  d.cap=c; d.pcbMat=M(0xb9c0c6,{m:0.7,r:0.35}); g.children[0].material=d.pcbMat; DRIVES.push(d);
+  d.cap=c; d.pcbMat=M(0xb9c0c6,{m:0.7,r:0.35}); g.children[0].material=d.pcbMat; d.lever=lev; lev.rotation.y=-0.65; DRIVES.push(d);
 });
 // top cover: a release latch with a lock in the middle, and four screws on the rear edge (their printed order changes every game)
 const lidMat = M(0xa7b0b7,{m:0.65,r:0.4});
@@ -1022,7 +1051,7 @@ const lidG=new THREE.Group(); lidG.visible=false;
 { const plate=box(CH_W,0.003,CH_D,lidMat); plate.position.y=0.0015; lidG.add(plate);
   decal(0.08,0.05, arrowTex('FRONT'), lidG, 0.06, 0.0032, 0.25, Math.PI);
   decal(0.07,0.07, canvasTex(256,256,(g)=>{ g.fillStyle='#a7b0b7'; g.fillRect(0,0,256,256); g.fillStyle='#3a3f44'; for (let y=20;y<240;y+=22) for (let x=20;x<240;x+=22) { g.beginPath(); g.arc(x,y,6,0,7); g.fill(); } }), lidG, 0.12, 0.0032, -0.27);
-  decal(0.13,0.075, canvasTex(512,300,(g)=>{ g.fillStyle='#d9dee2'; g.fillRect(0,0,512,300); g.fillStyle='#2a2f33'; g.font='700 44px '+DISPLAY; g.fillText('SRV-1U  TRAINING UNIT',24,60); g.font='500 24px "IBM Plex Mono", monospace'; ['Remove power before opening.','ESD sensitive inside.','Follow the SWI for this product.'].forEach((t,i)=>g.fillText(t,24,130+i*50)); }), lidG, -0.12, 0.0032, -0.24); }
+  decal(0.13,0.075, canvasTex(512,300,(g)=>{ g.fillStyle='#d9dee2'; g.fillRect(0,0,512,300); g.fillStyle='#2a2f33'; g.font='700 44px '+DISPLAY; g.fillText('SRV-1U  TRAINING UNIT',24,60); g.font='500 24px "IBM Plex Mono", monospace'; ['Remove power before opening.','ESD sensitive inside.','Follow the work instruction for this product.'].forEach((t,i)=>g.fillText(t,24,130+i*50)); }), lidG, -0.12, 0.0032, -0.24); }
 // the latch: a black lever hinged at its rear end, raised while open; its lock turns a quarter turn to lock
 const LATCH_OPEN = -0.55;
 const lidLatchG = new THREE.Group(); lidLatchG.position.set(-0.04,0.0032,0.2175); lidLatchG.rotation.x=LATCH_OPEN; lidG.add(lidLatchG);
@@ -1106,6 +1135,7 @@ for (const d of CAB_DEFS){
   const mat=M(d.color,{r:0.55}), tubeMat = d.flat ? new THREE.MeshStandardMaterial({map:d.stripe ? ffcTex : ribbonTex, roughness:0.7, side:THREE.DoubleSide}) : M(d.jacket,{r:0.6});
   const g=new THREE.Group(); g.add(box(...d.size,mat)); root.add(g);
   if (d.flat){ const pin1=box(0.004,d.size[1]+0.0005,d.size[2]+0.0005,M(d.stripe ?? 0xd23b2f,{r:0.5})); pin1.position.x=-d.size[0]/2+0.002; g.add(pin1); }
+  if (d.id==='c2' || d.id==='c3'){ const t=d.id==='c2' ? 'BP SAS A' : 'BP SAS B'; const sv=new THREE.Mesh(new THREE.BoxGeometry(0.010,0.0075,0.022), new THREE.MeshStandardMaterial({map:canvasTex(256,128,(q,w,h)=>{ q.fillStyle='#16191b'; q.fillRect(0,0,w,h); q.fillStyle='#ffffff'; q.font='700 46px "IBM Plex Mono", monospace'; q.textAlign='center'; q.textBaseline='middle'; q.fillText(t,w/2,h/2); }), roughness:0.6})); sv.position.z=0.017; g.add(sv); }
   const hit=box(0.022,0.02,0.022,new THREE.MeshBasicMaterial()); hit.visible=false; hit.userData={kind:'part', id:d.id}; g.add(hit); pickables.push(hit);
   const tube=new THREE.Mesh(new THREE.BufferGeometry(), tubeMat); root.add(tube);
   const sl = d.src ? null : SRC[d.id].position;   // board-local source, the board sits at BOARD_IN with no rotation when cables are used
@@ -1202,13 +1232,13 @@ const TOUR = [
 const tourLabels = new THREE.Group(); station.add(tourLabels);
 const _box = new THREE.Box3(), _bc = new THREE.Vector3(), _bs = new THREE.Vector3();
 function makeLabel(text){
-  const font='600 40px "IBM Plex Sans", sans-serif';
-  const c=document.createElement('canvas'); let g=c.getContext('2d'); g.font=font; const w=Math.ceil(g.measureText(text).width)+44;
-  c.width=w; c.height=68; g=c.getContext('2d');
-  g.fillStyle='#1b2125'; roundRect(g,2,2,w-4,64,12); g.fill(); g.strokeStyle='#f2b134'; g.lineWidth=4; roundRect(g,2,2,w-4,64,12); g.stroke();
-  g.fillStyle='#e7ecef'; g.font=font; g.textAlign='center'; g.textBaseline='middle'; g.fillText(text,w/2,36);
-  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace;
-  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t, depthTest:false, transparent:true})); s.renderOrder=20; const h=0.024; s.scale.set(h*w/68,h,1); return s;
+  const font='700 80px "IBM Plex Sans", sans-serif';
+  const c=document.createElement('canvas'); let g=c.getContext('2d'); g.font=font; const w=Math.ceil(g.measureText(text).width)+88;
+  c.width=w; c.height=136; g=c.getContext('2d');
+  g.fillStyle='#12171a'; roundRect(g,4,4,w-8,128,24); g.fill(); g.strokeStyle='#78BE20'; g.lineWidth=8; roundRect(g,4,4,w-8,128,24); g.stroke();
+  g.fillStyle='#ffffff'; g.font=font; g.textAlign='center'; g.textBaseline='middle'; g.fillText(text,w/2,72);
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=8;
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t, depthTest:false, transparent:true})); s.renderOrder=20; const h=0.03; s.scale.set(h*w/136,h,1); return s;
 }
 const touring = () => state.mode==='learn' && !state.done && state.tour < TOUR.length;
 function st2Preview(){ setStation(2); boardPivot.position.copy(BOARD_IN); boardPivot.rotation.set(0,0,0); lidG.visible=true; brdScrewG.visible=true; cablesVisible(true, true); PSUS.forEach((p,i)=>{ p.group.position.copy(TARGETS[PSU_BAYS[i].id].pos); p.group.rotation.set(0,0,0); }); }
@@ -1229,8 +1259,9 @@ function showTour(){
 
 /* ---------- In-world panel and buttons (used inside the headset) ---------- */
 const PANEL_W=1024, PANEL_H=900;
-const panelCanvas = document.createElement('canvas'); panelCanvas.width=PANEL_W; panelCanvas.height=PANEL_H;
-const panelTex = new THREE.CanvasTexture(panelCanvas); panelTex.colorSpace = THREE.SRGBColorSpace; panelTex.anisotropy = 8;
+const PANEL_SS=2;   // the sign is drawn at twice the pixels so the letters stay sharp in the headset
+const panelCanvas = document.createElement('canvas'); panelCanvas.width=PANEL_W*PANEL_SS; panelCanvas.height=PANEL_H*PANEL_SS;
+const panelTex = new THREE.CanvasTexture(panelCanvas); panelTex.colorSpace = THREE.SRGBColorSpace; panelTex.anisotropy = 16;
 const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.52*PANEL_H/PANEL_W), new THREE.MeshBasicMaterial({map:panelTex}));
 panel.userData = {kind:'rig'};
 // panel and main buttons ride on a rig: behind the bench, or beside the ESD rack during the ESD steps
@@ -1276,10 +1307,10 @@ function drawButton(b){
   const g=b.canvas.getContext('2d'), W=320, H=110;
   g.clearRect(0,0,W,H);
   g.globalAlpha = b.enabled ? 1 : 0.35;
-  g.fillStyle = b.label==='AIR COOLING' ? (b.hover ? '#4d6170' : '#34414a') : b.label==='LIQUID COOLING' ? (b.hover ? '#2f7fe8' : '#2b6fe0') : b.label==='CONFIRM' ? '#f2b134' : b.label==='OK' ? '#47c08a' : b.label==='NOK' || b.label==='EXIT' ? (b.hover ? '#7a3329' : '#5a2620') : (b.hover ? '#3a4750' : '#242c31');
+  g.fillStyle = b.label==='AIR COOLING' ? (b.hover ? '#4d6170' : '#34414a') : b.label==='LIQUID COOLING' ? (b.hover ? '#2f7fe8' : '#2b6fe0') : b.label==='CONFIRM' ? '#78BE20' : b.label==='OK' ? '#47c08a' : b.label==='NOK' || b.label==='EXIT' ? (b.hover ? '#7a3329' : '#5a2620') : (b.hover ? '#3a4750' : '#242c31');
   roundRect(g,4,4,W-8,H-8,12); g.fill();
-  g.strokeStyle = b.hover ? '#f2b134' : '#46545e'; g.lineWidth=4; roundRect(g,4,4,W-8,H-8,12); g.stroke();
-  g.fillStyle = b.label==='CONFIRM' ? '#1a1405' : b.label==='OK' ? '#121619' : b.label==='NOK' || b.label==='EXIT' ? '#ffd9d3' : '#e7ecef';
+  g.strokeStyle = b.hover ? '#78BE20' : '#5a6973'; g.lineWidth=4; roundRect(g,4,4,W-8,H-8,12); g.stroke();
+  g.fillStyle = b.label==='CONFIRM' ? '#0d1a02' : b.label==='OK' ? '#121619' : b.label==='NOK' || b.label==='EXIT' ? '#ffd9d3' : '#e7ecef';
   const txt = LINE.on && b.label==='CONFIRM' ? (LINE.arm && performance.now()-LINE.arm < 4000 ? LT('again') : LT(LINE.role===1 ? 'send' : 'test')) : LINE.on && b.label==='MODE' ? (LINE.armEnd && performance.now()-LINE.armEnd < 4000 ? LT('again') : LT('endShift')) : b.label==='EXIT' && exitArm && performance.now()-exitArm < 4000 ? btnT('EXIT?') : b.label==='MODE' ? btnT(({learn:'RECOGNIZE',practice:'GUIDED',assessment:'ASSESSMENT'})[state.mode]) : (b.label==='CONFIRM' && touring()) ? btnT('CONTINUE') : b.label==='LANG' ? btnT('LANG')+': '+LANG_LABEL[state.lang] : btnT(b.label);
   let fs=46; do { g.font=`700 ${fs}px `+(state.lang==='zh' ? CJK : '"Barlow Condensed", "Arial Narrow", sans-serif'); fs-=2; } while (g.measureText(txt).width>W-28 && fs>22);
   g.textAlign='center'; g.textBaseline='middle';
@@ -1305,7 +1336,7 @@ function syncStatic(){
   set(q('.help'), T('help'));
   const bA=$('bAR'), bV=$('bVR'); if (bA) bA.textContent=['Start in passthrough','Iniciar en passthrough','以透视模式开始'][i]; if (bV) bV.textContent=['Full VR','VR completo','完全 VR'][i];
   const xn=$('xrNote'); if (xn && /^Headset buttons|^Los botones|^头显按钮/.test(xn.textContent)) xn.textContent=['Headset buttons turn on only in the Meta Quest Browser, opened from your own HTTPS link. On this screen you practice with the mouse.','Los botones del visor solo se activan en el Meta Quest Browser, abierto desde tu propio enlace HTTPS. En esta pantalla practicas con el mouse.','头显按钮仅在通过你自己的 HTTPS 链接打开的 Meta Quest 浏览器中可用。在此屏幕上可用鼠标练习。'][i];
-  set(q('#stepsBox > summary'), T('proc')); set($('swiSum'), ['Visual aid','Ayuda visual','图示'][i]);
+  set(q('#stepsBox > summary'), T('proc')); set($('swiSum'), ['Work instruction','Instrucción de trabajo','作业指导'][i]);
   $('title').textContent = (state.mode!=='learn' && !state.done && typeof phaseOf==='function') ? PH_NAME[phaseOf(state.step)][state.lang] : T(state.station===2 ? 'st2' : 'st1');
 }
 function roundRect(g,x,y,w,h,r){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); }
@@ -1475,6 +1506,21 @@ const MSG = [
  ["It goes to scrap and a new one is in the foam.", "Va a scrap y hay uno nuevo en la espuma.", "它将报废，泡棉中已放好新的一条。"],
  ["Lower the DIMM straight down and press only until both latches click.", "Baja el DIMM en línea recta y presiona solo hasta que ambos clips hagan clic.", "将内存条垂直放下，按压到两个卡扣咔嗒锁住即可。"],
  ["Fan placed in slot {}.", "Ventilador colocado en el slot {1}.", "风扇已放入 {1} 号槽。"],
+ ["Drive in bay {}, on the backplane connector.", "Disco en la bahía {1}, sobre el conector del backplane.", "硬盘已插入 {1} 号仓位，接上背板接口。"],
+ ["Close the lever until it clicks.", "Cierra la palanca hasta que haga click.", "合上把手，直到听到咔嗒声。"],
+ ["Drive locked in bay {}.", "Disco asegurado en la bahía {1}.", "硬盘已锁定在 {1} 号仓位。"],
+ ["All eight drives installed and locked on the backplane.", "Los ocho discos están instalados y asegurados en el backplane.", "八块硬盘已安装并锁定在背板上。"],
+ ["Screw in hand.", "Tornillo en la mano.", "螺丝已拿在手里。"],
+ ["Set it in an empty hole of the board.", "Ponlo en un hoyo vacío de la tarjeta.", "把它放进主板的一个空孔。"],
+ ["Hole {} already has a screw.", "El hoyo {1} ya tiene tornillo.", "{1} 号孔已经有螺丝。"],
+ ["Hole {} has no screw yet.", "El hoyo {1} todavía no tiene tornillo.", "{1} 号孔还没有螺丝。"],
+ ["Screw placed.", "Tornillo colocado.", "螺丝已放好。"],
+ ["Screw back in the bin.", "El tornillo regresó a la caja.", "螺丝已放回盒里。"],
+ ["All 10 screws placed.", "Los 10 tornillos están colocados.", "10 颗螺丝已全部放好。"],
+ ["Now tighten them with the torque driver, in the printed order.", "Ahora apriétalos con el desarmador de torque, en el orden impreso.", "现在用扭力起子按印的顺序拧紧。"],
+ ["Now place the 10 board screws by hand.", "Ahora coloca a mano los 10 tornillos de la tarjeta.", "现在用手放好主板的 10 颗螺丝。"],
+ ["Put down what you hold first.", "Primero deja lo que tienes en la mano.", "请先放下手里的东西。"],
+ ["Touch the partner table to place it here.", "Toca la mesa del compañero para colocarla aquí.", "触碰搭档的桌子以放置在这里。"],
  ["Press it down until its connector seats.", "Presiónalo hacia abajo hasta que su conector asiente.", "向下按压，直到接头插到位。"],
  ["RISER {} placed.", "RISER {1} colocado.", "RISER {1} 已放入。"],
  ["Press the blue touch points until it seats.", "Presiona los puntos azules hasta que asiente.", "按压蓝色按压点，直到其就位。"],
@@ -2116,17 +2162,18 @@ const act = {
     if (pose.orient!==0){ fail({board:'The rear I/O ports must face the rear of the chassis. Rotate the board 180 degrees.', fan:'The airflow arrow points the wrong way. It must point to the rear, toward the board. Rotate the fan.', loop:'The blue inlet fitting must be on CPU1 and point to the rear. Rotate the loop 180 degrees.', hdd:'The drive connectors must face the rear, toward the board. Rotate the drive.', lid:'The FRONT arrow must point toward you. Rotate the cover.', psu:'The gold edge goes in first, the handle and the orange latch face the rear. Rotate the power supply 180 degrees.', riser:'The bracket and the blue latch must face the rear. Rotate the riser 180 degrees.'}[d.kind]); return false; }
     d.orient=0; state.held=null; state.holder=null; state.snap=null; d.state='seated'; d.slot=target; T.occupied=d.id;
     // fans and risers sit on their slot until a hand presses them down; a power supply slides in from the rear
-    const ajar = d.kind==='fan' || d.kind==='riser', to = ajar ? T.pos.clone().add(V3(0,0.007,0)) : T.pos.clone();
+    const ajar = d.kind==='fan' || d.kind==='riser' || d.kind==='hdd', to = d.kind==='hdd' ? T.pos.clone().add(V3(0,0,0.006)) : ajar ? T.pos.clone().add(V3(0,0.007,0)) : T.pos.clone();
     let from=d.group.position.clone(); if (from.y < T.pos.y+0.015) from.y=T.pos.y+0.03;
     if (d.kind==='psu') from = T.pos.clone().add(V3(0,0,-0.13));
+    if (d.kind==='hdd'){ from = T.pos.clone().add(V3(0,0,0.13)); d.lever.rotation.y=-0.65; }
     if (ajar) d.state='ajar';
     state.anims.push({t0:performance.now(), dur:d.kind==='psu'?520:420, from, to, qFrom:d.kind==='psu'?new THREE.Quaternion():d.group.quaternion.clone(), qTo:new THREE.Quaternion(), obj:d.group, done:()=>{}});
     SND.click(d.kind==='hdd' || d.kind==='psu' ? 'latch' : 'snap');
-    if (ajar){ say(d.kind==='fan' ? `Fan placed in slot ${T.n}. Press it down until its connector seats.` : `RISER ${d.rn} placed. Press the blue touch points until it seats.`); return true; }
+    if (ajar){ say(d.kind==='fan' ? `Fan placed in slot ${T.n}. Press it down until its connector seats.` : d.kind==='hdd' ? `Drive in bay ${T.n}, on the backplane connector. Close the lever until it clicks.` : `RISER ${d.rn} placed. Press the blue touch points until it seats.`); return true; }
     if (d.kind==='hdd'){ const k=DRIVES.filter(f=>f.state==='seated').length; if (k<DRIVES.length){ say(`Drive seated in bay ${T.n}. ${DRIVES.length-k} to go.`,'ok'); return true; } advance('All eight drives installed. Now connect the cables in sequence.'); return true; }
     if (d.kind==='board'){ cablesVisible(true); brdScrewG.visible=true; for (const id of ['h1','h2']) rebuildTube(CAB[id]); }
     if (d.kind==='psu'){ const k=PSUS.filter(f=>f.state==='seated').length; if (k<PSUS.length){ say(`Power supply latched in bay ${T.label}. ${PSUS.length-k} to go.`,'ok'); return true; } advance('Both power supplies installed and latched.'); return true; }
-    advance({board:'Board installed in the chassis. Now tighten the 10 board screws in the printed order.', hdd:'Drive installed. Now connect the cables in sequence.', lid:'Top cover in place. Close the latch and lock it.'}[d.kind]);
+    advance({board:'Board installed in the chassis. Now place the 10 board screws by hand.', hdd:'Drive installed. Now connect the cables in sequence.', lid:'Top cover in place. Close the latch and lock it.'}[d.kind]);
     return true;
   },
   connect(hid){
@@ -2186,19 +2233,39 @@ const act = {
   },
   press(id){
     const d=OBJ(id); if (!d || d.state!=='ajar') return false;
-    const t={fan:'fans', riser:'risers'}[d.kind];
+    const t={fan:'fans', riser:'risers', hdd:'hdd'}[d.kind];
     if (cur()?.type!==t){ warn(`Not yet. Current step: ${cur()?.title}.`); return false; }
     d.state='seated'; const T=TARGETS[d.slot];
     state.anims.push({t0:performance.now(), dur:220, from:d.group.position.clone(), to:T.pos.clone(), obj:d.group, done:()=>{}});
     SND.click('latch');
+    if (d.kind==='hdd'){ d.lever.rotation.y=0; const k=DRIVES.filter(f=>f.state==='seated').length; if (k<DRIVES.length){ say(`Drive locked in bay ${T.n}. ${DRIVES.length-k} to go.`,'ok'); return true; } advance('All eight drives installed and locked on the backplane.'); return true; }
     const list = d.kind==='fan' ? FANS : RISERS, k=list.filter(f=>f.state==='seated').length;
     if (k<list.length){ say(d.kind==='fan' ? `Fan ${T.n} pressed in, connector seated. ${list.length-k} to go.` : `RISER ${d.rn} seated.`, 'ok'); return true; }
     advance(d.kind==='fan' ? 'All seven fans installed and pressed in, airflow to the rear.' : 'Both riser cards seated.');
     return true;
   },
+  // take one board screw from the bin (hand, controller or mouse); it rides in the fingers until it goes in a hole
+  takeScrew(holder='mouse'){
+    if (state.done) return false;
+    if (cur()?.type!=='brdPlace'){ warn(`Not yet. Current step: ${cur()?.title}.`); return false; }
+    if (state.held || state.tool || state.boardHeld){ say('Put down what you hold first.'); return false; }
+    if (brdPlacedN()>=10) return false;
+    state.screw=holder; heldScrew.visible = !!holder?.h; showHoleRings(true); SND.tick();
+    say('Screw in hand. Set it in an empty hole of the board.'); return true;
+  },
+  placeBrdScrew(n){
+    if (cur()?.type!=='brdPlace') return false;
+    const sc=brdScrews[n]; if (!sc || !state.screw) return false;
+    if (sc.placed){ say(`Hole ${n} already has a screw.`); return false; }
+    sc.placed=true; sc.group.visible=true; sc.group.position.y=BSCREW_UP; sc.group.rotation.y=0; state.screw=null; heldScrew.visible=false; showHoleRings(false); SND.click();
+    const k=brdPlacedN(); if (k>=10) return advance('All 10 screws placed. Now tighten them with the torque driver, in the printed order.');
+    say(`Screw placed. ${10-k} to go.`,'ok'); return true;
+  },
+  dropScrew(){ if (!state.screw) return; state.screw=null; heldScrew.visible=false; showHoleRings(false); say('Screw back in the bin.'); },
   tightenBrd(n){
     if (cur()?.type!=='brdScrews' || state.tool!=='driver') return;
     const sc=brdScrews[n]; if (!sc) return;
+    if (!sc.placed) return say(`Hole ${n} has no screw yet.`);
     if (sc.tight) return say(`Screw ${n} is already tight.`);
     if (n!==state.brdNext) return fail(`Wrong sequence. Tighten screw ${state.brdNext} before screw ${n}.`);
     sc.tight=true; state.brdNext++; screwSound();
@@ -2413,7 +2480,8 @@ function reset(){
   for (const T of Object.values(TARGETS)) T.occupied=null;
   for (const d of Object.values(Q)){ if (d===BRD) continue; d.orient=d.start; toTray(d); }
   for (const sc of Object.values(lidScrews)){ sc.tight=false; sc.group.position.y=LSCREW_UP; sc.group.rotation.y=0; }
-  for (const sc of Object.values(brdScrews)){ sc.tight=false; sc.group.position.y=BSCREW_UP; sc.group.rotation.y=0; }
+  for (const sc of Object.values(brdScrews)){ sc.tight=false; sc.placed=false; sc.group.visible=false; sc.ring.visible=false; sc.group.position.y=BSCREW_UP; sc.group.rotation.y=0; }
+  state.screw=null; heldScrew.visible=false;
   brdScrewG.visible=false; Q.lid.latched=false; Q.lid.locked=false; lidLatchG.quaternion.setFromAxisAngle(new THREE.Vector3(1,0,0), LATCH_OPEN); lidLockG.quaternion.identity();
   lidG.visible=false; cablesVisible(false); state.lcNext=1; state.qdOk=new Set();
   for (const sc of Object.values(lcScrews)){ sc.tight=false; sc.group.position.y=0.016; sc.group.rotation.y=0; }
@@ -2435,7 +2503,7 @@ const elapsed = () => state.t0 ? ((state.t1 ?? performance.now()) - state.t0) : 
 
 // three parts in order: ESD equipment (not timed), motherboard assembly and server assembly (each timed against its standard)
 // standard seconds per step in the headset: motherboard air 4:40, motherboard liquid 4:53, chassis air 3:47, chassis liquid 4:02
-const STD_S = {wear:8, esd:6, gloves:6, choose:5, lever:3, plate:4, cpu:10, plateClose:5, paste:12, heatsink:10, screws:12, latch:2, insert:4.5, close:2, inspect:12, s2board:12, psu:15, fans:42, hdd:40, lid:10, lidScrews:12, lidLatch:6, brdScrews:30, risers:20, lcLoop:15, lcScrews:30, lcCheck:10};
+const STD_S = {wear:8, esd:6, gloves:6, choose:5, lever:3, plate:4, cpu:10, plateClose:5, paste:12, heatsink:10, screws:12, latch:2, insert:4.5, close:2, inspect:12, s2board:12, brdPlace:30, psu:15, fans:42, hdd:40, lid:10, lidScrews:12, lidLatch:6, brdScrews:30, risers:20, lcLoop:15, lcScrews:30, lcCheck:10};
 const stdOf = s => (s.type==='cable' ? (CAB[s.cable]?.flat ? 10 : CAB[s.cable]?.hose ? 20 : 15) : s.type==='paste' && s.pattern==='star' ? 18 : (STD_S[s.type] ?? 8))*1000;
 let MB_START, SV_START, PH_RANGE, PH_STD;
 function setPhases(){
@@ -2557,50 +2625,52 @@ function wrapAny(g, text, maxW){
   if (line.trim()) lines.push(line.trimEnd()); return lines;
 }
 function drawPanel(){
-  const g=panelCanvas.getContext('2d'), W=PANEL_W, H=PANEL_H, X=44, MW=W-90, Lg=state.lang, zh=Lg==='zh';
+  const g=panelCanvas.getContext('2d'); g.setTransform(PANEL_SS,0,0,PANEL_SS,0,0); const W=PANEL_W, H=PANEL_H, X=44, MW=W-90, Lg=state.lang, zh=Lg==='zh';
   const TF = zh ? CJK : '"Barlow Condensed", "Arial Narrow", sans-serif', BF = zh ? CJK : '"IBM Plex Sans", sans-serif';
   g.fillStyle='#1b2125'; g.fillRect(0,0,W,H);
-  g.fillStyle = state.done ? (verdict().cls==='fail' ? '#f07161' : verdict().cls==='pass' ? '#47c08a' : '#f2b134') : '#f2b134';
+  g.fillStyle = state.done ? (verdict().cls==='fail' ? '#f07161' : verdict().cls==='pass' ? '#47c08a' : '#78BE20') : '#78BE20';
   g.fillRect(0,0,10,H);
   g.textBaseline='alphabetic'; g.textAlign='left';
-  g.fillStyle='#f2b134'; g.font=`500 24px ${zh?CJK:'"IBM Plex Mono", monospace'}`;
+  g.fillStyle='#78BE20'; g.font=`600 26px ${zh?CJK:'"IBM Plex Mono", monospace'}`;
   if (LINE.on) g.fillText(`${LT('head')} ${LINE.room} · ${LT('st', LINE.role)}`, X, 52); else g.fillText((state.mode==='learn' ? UI.head[Lg][0] : state.done ? ({en:'RESULTS', es:'RESULTADOS', zh:'结果'})[Lg] : PH_HEAD[phaseOf(state.step)][Lg])+' · '+UI.modeL[Lg][state.mode], X, 52);
   g.fillStyle='#34414a'; g.fillRect(W-150, 24, 110, 40); g.fillStyle='#e7ecef'; g.font=`700 26px ${zh?CJK:'"IBM Plex Mono", monospace'}`; g.textAlign='center'; g.fillText(LANG_LABEL[Lg], W-95, 53); g.textAlign='left';
   let y=110;
   if (!state.done && view()){
     const s=view();
-    g.fillStyle='#9aa7af'; g.font=`500 26px ${zh?CJK:'"IBM Plex Mono", monospace'}`; g.fillText(zh ? s.no : s.no.toUpperCase(), X, y);
-    g.fillStyle='#ffffff'; g.font=`700 ${zh?58:68}px ${TF}`;
-    for (const l of wrapAny(g, zh ? s.title : s.title.toUpperCase(), MW).slice(0,2)){ y+=74; g.fillText(l, X, y); }
-    g.fillStyle='#d5dde2'; g.font=`400 ${zh?36:35}px ${BF}`; y+=8;
-    for (const l of wrapAny(g, s.text, MW).slice(0,6)){ y+=48; g.fillText(l, X, y); }
+    g.fillStyle='#c3ccd2'; g.font=`600 27px ${zh?CJK:'"IBM Plex Mono", monospace'}`; g.fillText(zh ? s.no : s.no.toUpperCase(), X, y);
+    g.fillStyle='#ffffff'; const tt = zh ? s.title : s.title.toUpperCase(); let tfs = zh?58:68, tl;
+    // the whole title always shows: the letters shrink a little when it needs more than two lines
+    for (;;){ g.font=`700 ${tfs}px ${TF}`; tl=wrapAny(g, tt, MW); if (tl.length<=2 || tfs<=46) break; tfs-=4; }
+    for (const l of tl.slice(0,3)){ y+=tfs+6; g.fillText(l, X, y); }
+    g.fillStyle='#f2f5f7'; g.font=`500 ${zh?38:38}px ${BF}`; y+=8;
+    for (const l of wrapAny(g, s.text, MW).slice(0,6)){ y+=50; g.fillText(l, X, y); }
     y+=18;
-    if (s.type==='tour' || s.type==='inspect'){ g.fillStyle='#f2b134'; g.font=`600 30px ${BF}`; y+=36; g.fillText((s.type==='tour'?UI.cont:UI.insp)[Lg], X, y); y+=10; }
-    if (state.mode!=='assessment' && s.hint){ g.fillStyle='#9aa7af'; g.font=`400 28px ${BF}`; for (const l of wrapAny(g,s.hint,MW).slice(0, Math.max(0, Math.floor((H-200-y)/38)))){ y+=38; g.fillText(l,X,y); } }
+    if (s.type==='tour' || s.type==='inspect'){ g.fillStyle='#78BE20'; g.font=`600 30px ${BF}`; y+=36; g.fillText((s.type==='tour'?UI.cont:UI.insp)[Lg], X, y); y+=10; }
+    if (state.mode!=='assessment' && s.hint){ g.fillStyle='#c3ccd2'; g.font=`500 31px ${BF}`; for (const l of wrapAny(g,s.hint,MW).slice(0, Math.max(0, Math.floor((H-200-y)/40)))){ y+=40; g.fillText(l,X,y); } }
   } else {
     const v=verdict();
-    g.fillStyle = v.cls==='pass' ? '#47c08a' : v.cls==='fail' ? '#f07161' : '#f2b134';
+    g.fillStyle = v.cls==='pass' ? '#47c08a' : v.cls==='fail' ? '#f07161' : '#78BE20';
     g.font=`700 ${zh?96:110}px ${TF}`; g.fillText(vT(v.text), X, 195);
     g.fillStyle='#e7ecef'; g.font=`400 30px ${BF}`; let yy=210;
     for (const l of wrapAny(g, vT(v.sub), MW).slice(0,2)){ yy+=38; g.fillText(l, X, yy); }
     yy+=10;
-    for (const [txt,tone] of resultLines()){ const hd=tone==='h'; g.fillStyle={err:'#f07161', ok:'#47c08a', info:'#d5dde2', h:'#f2b134'}[tone]; g.font=hd ? `700 32px ${TF}` : `600 28px ${BF}`; if (hd) yy+=12;
+    for (const [txt,tone] of resultLines()){ const hd=tone==='h'; g.fillStyle={err:'#f07161', ok:'#47c08a', info:'#f2f5f7', h:'#78BE20'}[tone]; g.font=hd ? `700 32px ${TF}` : `600 28px ${BF}`; if (hd) yy+=12;
       for (const l of wrapAny(g, hd && !zh ? txt.toUpperCase() : txt, MW)){ yy+=hd?42:38; g.fillText(l, X, yy); } }
-    if (state.errLog.length){ g.fillStyle='#9aa7af'; g.font=`400 24px ${BF}`; for (const e of state.errLog.slice(0,3)) for (const l of wrapAny(g, '· '+trMsg(e), MW).slice(0,1)){ if (yy>H-215) break; yy+=32; g.fillText(l, X, yy); } }
+    if (state.errLog.length){ g.fillStyle='#c3ccd2'; g.font=`400 24px ${BF}`; for (const e of state.errLog.slice(0,3)) for (const l of wrapAny(g, '· '+trMsg(e), MW).slice(0,1)){ if (yy>H-215) break; yy+=32; g.fillText(l, X, yy); } }
   }
-  if (LINE.on){ g.fillStyle='#f2b134'; g.font=`600 24px ${BF}`; const ls=wrapAny(g, lineStatusShort(), MW).slice(0,2); ls.forEach((l,i)=>g.fillText(l, X, H-238+i*30+(ls.length===1?30:0))); }
-  const tone={err:'#f07161',ok:'#47c08a',info:'#9aa7af'}[state.msg.tone];
+  if (LINE.on){ g.fillStyle='#78BE20'; g.font=`600 24px ${BF}`; const ls=wrapAny(g, lineStatusShort(), MW).slice(0,2); ls.forEach((l,i)=>g.fillText(l, X, H-238+i*30+(ls.length===1?30:0))); }
+  const tone={err:'#f07161',ok:'#47c08a',info:'#c3ccd2'}[state.msg.tone];
   g.fillStyle='#242c31'; g.fillRect(24,H-178,W-48,100);
-  g.fillStyle=tone; g.font=`600 28px ${BF}`;
-  wrapAny(g,trMsg(state.msg.text)||'',MW-20).slice(0,2).forEach((l,i)=>g.fillText(l,X,H-140+i*36));
+  g.fillStyle=tone; g.font=`600 31px ${BF}`;
+  wrapAny(g,trMsg(state.msg.text)||'',MW-20).slice(0,2).forEach((l,i)=>g.fillText(l,X,H-138+i*38));
   g.fillStyle='#34414a'; g.fillRect(X,H-60,W-2*X,2);
-  g.fillStyle='#9aa7af'; g.font=`500 22px ${zh?CJK:'"IBM Plex Mono", monospace'}`;
+  g.fillStyle='#c3ccd2'; g.font=`600 25px ${zh?CJK:'"IBM Plex Mono", monospace'}`;
   const php = state.mode==='learn' || state.done ? null : phaseOf(state.step);
   if (LINE.on && !state.done){ const v=LINE.unit?.variant || LINE.unit?.order || 'air', t=LINE.unit ? performance.now()-LINE.unit.t0 : 0; g.fillText(`${UI.time[Lg]} ${fmt(t)} / ${RES_T.std[Lg].toUpperCase()} ${fmt(lineStd(LINE.role, v))}`, X, H-22); }
   else { const tt = php==='esd' ? PH_NAME.esd[Lg].toUpperCase() : php ? `${UI.time[Lg]} ${fmt(phaseTime(php))} / ${RES_T.std[Lg].toUpperCase()} ${fmt(PH_STD[php])}` : `${UI.time[Lg]} ${fmt(elapsed())}`; g.fillText(tt, X, H-22); g.fillText(`${UI.errs[Lg]} ${state.errors}`, Math.max(420, X+g.measureText(tt).width+36), H-22); }
   // input status, to check on the headset that the controllers or the hands are seen
   if (renderer.xr.isPresenting){ const nc=ctrls.filter(C=>C.on && !C.isHand).length, nh=HANDS.filter(H=>H.active).length;
-    g.textAlign='right'; g.fillStyle = nc||nh ? '#9aa7af' : '#f07161'; g.fillText(`${({en:'CONTROLLERS',es:'CONTROLES',zh:'手柄'})[Lg]} ${nc} · ${({en:'HANDS',es:'MANOS',zh:'手'})[Lg]} ${nh}`, W-X, H-22); g.textAlign='left'; }
+    g.textAlign='right'; g.fillStyle = nc||nh ? '#c3ccd2' : '#f07161'; g.fillText(`${({en:'CONTROLLERS',es:'CONTROLES',zh:'手柄'})[Lg]} ${nc} · ${({en:'HANDS',es:'MANOS',zh:'手'})[Lg]} ${nh}`, W-X, H-22); g.textAlign='left'; }
   panelTex.needsUpdate=true;
 }
 
@@ -2619,6 +2689,7 @@ function targetMats(){
   if (s.type==='psu') return state.held ? PSU_SLOT_MATS.filter((m,i)=>!TARGETS[PSU_BAYS[i].id].occupied) : PSUS.filter(f=>f.state!=='seated').map(f=>f.pcbMat);
   if (s.type==='fans') return state.held ? FAN_SLOT_MATS.filter((m,i)=>!TARGETS['FAN'+(i+1)].occupied) : FANS.filter(f=>f.state!=='seated').map(f=>f.pcbMat);
   if (s.type==='risers') return state.held ? RISER_SLOT_MATS.filter((m,i)=>!TARGETS['RISER'+(i+1)].occupied && i+1===state.held.rn) : RISERS.filter(f=>f.state!=='seated').map(f=>f.pcbMat);
+  if (s.type==='brdPlace') return state.screw ? [] : [sbinMat];
   if (s.type==='brdScrews') return state.tool ? (brdScrews[state.brdNext] ? [brdScrews[state.brdNext].mat] : []) : [TOOLS.driver.mat];
   if (s.type==='lidLatch') return [latchMat2];
   if (s.type==='hdd') return state.held ? Object.values(TARGETS).filter(T=>T.kind==='hdd' && !T.occupied && (!state.held.cap || T.cap===state.held.cap)).map(T=>T.mat) : DRIVES.filter(d=>d.state!=='seated').map(d=>d.pcbMat);
@@ -2709,6 +2780,7 @@ function guidePoints(){
     case 'psu': { const T=freeT('psu'); return [held?null:topOf(freeOf(PSUS)?.group), T?W3(T.pos.x,T.pos.y+0.024,T.pos.z):null]; }
     case 'fans': { const aj=FANS.find(f=>f.state==='ajar'); if (aj && !held) return [topOf(aj.group), null]; const T=freeT('fan'); return [held?null:topOf(freeOf(FANS)?.group), T?W3(T.pos.x,T.pos.y+0.024,T.pos.z):null]; }
     case 'risers': { const aj=RISERS.find(f=>f.state==='ajar'); if (aj && !held) return [topOf(aj.group), null]; const r=held || freeOf(RISERS), T=r ? TARGETS['RISER'+r.rn] : null; return [held?null:topOf(freeOf(RISERS)?.group), T && !T.occupied ? W3(T.pos.x,T.pos.y+0.04,T.pos.z):null]; }
+    case 'brdPlace': { const e=Object.values(brdScrews).find(x=>!x.placed); return [state.screw?null:topOf(sbinG), e ? topOf(e.holeHit) : null]; }
     case 'brdScrews': { const sc=brdScrews[state.brdNext]; return [tool?null:topOf(TOOLS.driver.group), sc ? topOf(sc.group) : null]; }
     case 'lidLatch': return [topOf(lidLatchG), null];
     case 'hdd': { const dr=held || freeOf(DRIVES), T=Object.values(TARGETS).find(T=>T.kind==='hdd' && !T.occupied && (!dr || T.cap===dr.cap)); return [held?null:topOf(freeOf(DRIVES)?.group), T?W3(T.pos.x, FLOOR_Y+WALL_H+0.004, T.pos.z):null]; }
@@ -2741,7 +2813,7 @@ function makeSwiRT(){ const rt=new THREE.WebGLRenderTarget(SWI_W*SWI_SS, SWI_IH*
 const swiRTs = [makeSwiRT(), makeSwiRT()];
 const swiCams = [0,1].map(()=>new THREE.PerspectiveCamera(32, SWI_W/SWI_IH, 0.005, 20));
 const RW=SWI_W*SWI_SS, RH=SWI_IH*SWI_SS, swiBuf = new Uint8Array(RW*RH*4), swiImg = document.createElement('canvas'); swiImg.width=RW; swiImg.height=RH;
-const SWI_TXT = { title:{en:'VISUAL AID', es:'AYUDA VISUAL', zh:'图示'}, take:{en:'1 · TAKE', es:'1 · TOMA', zh:'1 · 拿取'}, where:{en:'1 · LOCATION', es:'1 · UBICACIÓN', zh:'1 · 位置'},
+const SWI_TXT = { title:{en:'WORK INSTRUCTION', es:'INSTRUCCIÓN DE TRABAJO', zh:'作业指导'}, take:{en:'1 · TAKE', es:'1 · TOMA', zh:'1 · 拿取'}, where:{en:'1 · LOCATION', es:'1 · UBICACIÓN', zh:'1 · 位置'},
   place:{en:'2 · PLACE IT HERE', es:'2 · COLÓCALO AQUÍ', zh:'2 · 放置位置'}, touch:{en:'2 · TOUCH HERE', es:'2 · TOCA AQUÍ', zh:'2 · 触碰此处'}, check:{en:'2 · CHECK', es:'2 · REVISA', zh:'2 · 检查'},
   order:{en:'2 · ORDER', es:'2 · ORDEN', zh:'2 · 顺序'}, route:{en:'2 · ROUTE AND CONNECT', es:'2 · RUTA Y CONEXIÓN', zh:'2 · 走线与连接'} };
 const _sq2=new THREE.Quaternion();
@@ -2791,6 +2863,7 @@ function swiSpec(s){
     case 'lidScrews': { const ks=Object.keys(lidScrews).map(Number).sort((a,b)=>a-b); const p=W3(LID_SEAT.x,LID_SEAT.y,-0.31);
       return {take:take(TOOLS.driver.group,0.18), place:{c:p, w:0.5, dir:dirSt(0,1,0.6), marks:ks.map(n=>mk(wp(lidScrews[n].group), String(n)))}, cap:'order'}; }
     case 'lidLatch': { const p=wp(lidLatchG); return {take:{c:W3(LID_SEAT.x,LID_SEAT.y,LID_SEAT.z), w:0.8, dir:dirSt(0,1,0.8), marks:[mk(p,'','#f2b134')]}, place:{c:p, w:0.12, dir:dirSt(0,1,0.5), marks:[mk(p,'LOCK')]}, cap:'touch', cap1:'where'}; }
+    case 'brdPlace': { const p=W3(BOARD_IN.x,BOARD_IN.y,BOARD_IN.z-0.05); return {take:take(sbinG,0.16), place:{c:p, w:0.55, dir:top, marks:Object.values(brdScrews).map(x=>mk(wp(x.holeHit),''))}, cap:'place'}; }
     case 'brdScrews': { const ks=Object.keys(brdScrews).map(Number).sort((a,b)=>a-b); const p=W3(BOARD_IN.x,BOARD_IN.y,BOARD_IN.z-0.05);
       return {take:take(TOOLS.driver.group,0.18), place:{c:p, w:0.55, dir:top, marks:ks.map(n=>mk(wp(brdScrews[n].group), String(n)))}, cap:'order'}; }
     case 'risers': { const T=['RISER1','RISER2'].map(k=>TARGETS[k]), c=W3(0.225,FLOOR_Y+0.02,RISER_Z);
@@ -2915,7 +2988,9 @@ function pickOK(o, xr, insp){
     if (state.station===2 && (ST1_KINDS.includes(o.userData.kind) || (o.userData.kind==='board' && BRD.state==='seated'))) return false;
     if (o.userData.kind==='lscrew' && Q.lid.state!=='seated') return false;
     if (o.userData.kind==='lidlatch' && Q.lid.state!=='seated') return false;
-    if (o.userData.kind==='bscrew' && (state.station!==2 || BRD.state!=='seated')) return false;
+    if (o.userData.kind==='bscrew' && (state.station!==2 || BRD.state!=='seated' || !brdScrews[o.userData.n].placed)) return false;
+    if (o.userData.kind==='bhole' && (state.station!==2 || BRD.state!=='seated' || brdScrews[o.userData.n].placed || !state.screw)) return false;
+    if (o.userData.kind==='sbin' && state.station!==2) return false;
     if (o.userData.kind==='cscrew' && Q.loop.state!=='seated') return false;
     const holdingPart = state.held && (state.held.kind==='cpu' || state.held.kind==='hs');
     const u=o.userData;
@@ -2949,6 +3024,7 @@ function stepWants(u){
     case 'latch': case 'close': return (u.kind==='latch' || u.kind==='slot') && u.slot===s.slot;
     case 'insert': return state.held ? ((u.kind==='slot' || u.kind==='latch') && u.slot===s.slot) : (u.kind==='dimm' && D[u.dimm].state==='tray' && D[u.dimm].cap===S[s.slot].cap);
     case 's2board': return u.kind==='board';
+    case 'brdPlace': return state.screw ? u.kind==='bhole' : u.kind==='sbin';
     case 'psu': return part?.kind==='psu' && part.state!=='seated';
     case 'fans': return part?.kind==='fan' && part.state!=='seated';
     case 'hdd': return part?.kind==='hdd';
@@ -3072,6 +3148,8 @@ function useTool(tag){
 function tap(tag, holder){
   tag = normTag(tag);
   if (tag?.kind==='btn') return runBtn(tag.action);
+  if (tag?.kind==='sbin' && !state.screw) return act.takeScrew(holder && holder!=='mouse' ? holder : 'mouse');
+  if (state.screw){ if (tag?.kind==='bhole') return act.placeBrdScrew(tag.n); return act.dropScrew(); }
   if (state.boardHeld==='mouse') return act.boardRelease();
   if (state.mode==='learn') return learnTouch(tag);
   if (state.tool) return useTool(tag);
@@ -3286,13 +3364,17 @@ let PINCH_HOLD_MS=60;    // the fingers must stay open this long to let go: a pa
 function nearestTag(p){
   // closest pickable within reach of the pinch point. What the current step needs wins when it is close,
   // so a pinch in a crowded area (latches, DIMM slots) takes the right part. The board and the sign only count when nothing else is near.
-  let best=null, bd=REACH, want=null, wd=REACH, brd=null, sign=null, ctrl=null, cd=0.015;
+  // contact grab, as in the DIMM install trainer: the fingers must be AT the part. A DIMM: the pinch point within 5 mm of the module;
+  // other parts and tools: within 8 mm of their real surface (not of a box around them); latches, levers and screws: 12 mm
+  let best=null, bd=Infinity, want=null, wd=Infinity, brd=null, sign=null, ctrl=null, cd=0.012;
   for (const o of pickables){
     const u=o.userData; if (!u.kind || u.kind==='btn' || !pickOK(o, true, false)) continue;
-    o.updateWorldMatrix(true,false); let d;
-    if (u.kind==='dimm' && D[u.dimm]){ const l=D[u.dimm].group.worldToLocal(_dl.copy(p)); const ox=Math.max(0,Math.abs(l.x)-DIMM_L/2), oy=l.y>DIMM_H ? l.y-DIMM_H : (l.y<0 ? -l.y : 0); d=Math.hypot(Math.max(0,Math.abs(l.z)-0.0015), ox, oy*0.6); }
+    o.updateWorldMatrix(true,false); let d, thr=GRAB_R_CTL;
+    if (u.kind==='dimm' && D[u.dimm]){ const l=D[u.dimm].group.worldToLocal(_dl.copy(p)); const ox=Math.max(0,Math.abs(l.x)-DIMM_L/2), oy=l.y>DIMM_H ? l.y-DIMM_H : (l.y<0 ? -l.y : 0); d=Math.hypot(Math.max(0,Math.abs(l.z)-0.0015), ox, oy); thr=GRAB_R_DIMM; }
+    else if ((u.kind==='part' || u.kind==='tool') && grabGroup(u)){ d=surfDist(grabGroup(u), p); thr=GRAB_R; }
     else { _bx.setFromObject(o); d=_bx.distanceToPoint(p); }
-    if (u.kind==='board'){ if (d<0.012) brd={...u, point:p.clone(), obj:o}; if (!(stepWants(u) && d<wd)) continue; }
+    if (u.kind==='board'){ if (d<0.012) brd={...u, point:p.clone(), obj:o}; if (!(stepWants(u) && d<wd && d<0.03)) continue; }
+    if (u.kind!=='board' && u.kind!=='rig' && d>=thr) continue;
     if (u.kind==='rig'){ if (d<0.02) sign={...u, point:p.clone()}; continue; }
     if (LINE.on && u.kind==='slot' && S[u.slot]?.occupied) continue;   // a filled slot is represented by its DIMM
     if (LINE.on && ['latch','lever','plate'].includes(u.kind) && d<cd){ cd=d; ctrl={...u, point:p.clone(), obj:o}; }
@@ -3309,11 +3391,27 @@ function nearestTag(p){
   if (ctrl && want && !['latch','lever','plate'].includes(want.kind)) return ctrl;
   return want || best || brd || sign;
 }
-const _gbx=new THREE.Box3(), _gc=new THREE.Vector3();
-function bringToFingers(obj){
-  // move the part so the pinch point lands on it: the nearest point of the part goes to the fingers
-  obj.updateWorldMatrix(true,true); _gbx.setFromObject(obj); if (_gbx.isEmpty()) return;
-  _gbx.clampPoint(_gp, _gc); const shift=_gp.clone().sub(_gc); if (shift.lengthSq()<1e-8) return;
+const GRAB_R=0.008, GRAB_R_DIMM=0.005, GRAB_R_CTL=0.012;
+const grabGroup = u => u.kind==='tool' ? TOOLS[u.name]?.group : (u.id==='board' ? null : OBJ(u.id)?.group);
+const _sl=new THREE.Vector3(), _sc=new THREE.Vector3();
+// distance from a point to the real surface of a part: the closest of its visible meshes (each one in its own frame)
+function surfDist(g, p){
+  let best=Infinity;
+  g.traverse(m=>{ if (!m.isMesh || !m.visible || !m.geometry || m.userData.kind) return; const gm=m.geometry; if (!gm.boundingBox) gm.computeBoundingBox();
+    m.updateWorldMatrix(true,false); const l=m.worldToLocal(_sl.copy(p)); const c=gm.boundingBox.clampPoint(l,_sc); m.localToWorld(c); const d=c.distanceTo(p); if (d<best) best=d; });
+  return best;
+}
+// the point of the part closest to the pinch point (world), so the part can come into the fingers
+function grabContact(obj, p, isDimm){
+  if (isDimm){ const l=obj.worldToLocal(p.clone()); l.x=Math.max(-DIMM_L/2, Math.min(DIMM_L/2, l.x)); l.y=Math.max(0, Math.min(DIMM_H, l.y)); l.z=0; return obj.localToWorld(l); }
+  let best=null, bd=Infinity;
+  obj.traverse(m=>{ if (!m.isMesh || !m.visible || !m.geometry || m.userData.kind) return; const gm=m.geometry; if (!gm.boundingBox) gm.computeBoundingBox();
+    const l=m.worldToLocal(p.clone()); const c=m.localToWorld(gm.boundingBox.clampPoint(l, new THREE.Vector3())); const d=c.distanceTo(p); if (d<bd){ bd=d; best=c; } });
+  return best || new THREE.Box3().setFromObject(obj).clampPoint(p, new THREE.Vector3());
+}
+// the part comes into the fingers: shift it so its closest point sits at the pinch point (no gap between hand and part)
+function bringToFingers(obj, isDimm){
+  obj.updateWorldMatrix(true,true); const c=grabContact(obj, _gp, isDimm), shift=_gp.clone().sub(c); if (shift.lengthSq()<1e-10) return;
   const wp=new THREE.Vector3(); obj.getWorldPosition(wp); wp.add(shift); obj.position.copy(obj.parent.worldToLocal(wp)); obj.updateWorldMatrix(true,true);
 }
 function grabOffsets(H, obj){
@@ -3339,15 +3437,16 @@ function handPinchStart(H){
   if (state.boardHeld && state.boardHeld!==H && !state.boardHeld2 && typeof state.boardHeld==='object' && nearestTag(_gp)?.kind==='board'){ boardSecondHand(H); return; }
   if (state.held || state.tool || state.boardHeld || state.rigHolder){ if (nearestTag(_gp)) say('Your other hand is busy. Put down what you hold first.'); return; }
   H.dh=null;
-  const t0 = nearestTag(_gp) || (H.cand && performance.now()-H.candT<120 ? H.cand : null);   // the closed pinch point decides; the box seen a moment ago helps when the fingers close just outside
+  const t0 = nearestTag(_gp);   // the pinch point decides: only what the fingers touch
+  if (t0?.kind==='sbin'){ act.takeScrew(H); return; }
   LINE.pinchY = board.worldToLocal(_gp.clone()).y - BOARD_TOP; LINE.pinchT = performance.now();
   if (t0?.kind==='rig'){ startRigMove(H, _gp.clone()); return; }
   if (state.mode==='learn') return learnTouch(t0);
   const tag = normTag(t0);
   if (!tag) return;
   if (tag.kind==='part' && OBJ(tag.id).state==='seated') return tap(tag, H);
-  if (tag.kind==='dimm' || tag.kind==='part'){ const id=tag.dimm ?? tag.id; if (act.grab(id)){ state.holder=H; grabOffsets(H, OBJ(id).group); } return; }
-  if (tag.kind==='tool'){ if (act.toolPick(tag.name)){ state.toolHolder=H; grabOffsets(H, TOOLS[tag.name].group); H.contact=null; } return; }
+  if (tag.kind==='dimm' || tag.kind==='part'){ const id=tag.dimm ?? tag.id; if (act.grab(id)){ state.holder=H; bringToFingers(OBJ(id).group, tag.kind==='dimm'); grabOffsets(H, OBJ(id).group); } return; }
+  if (tag.kind==='tool'){ if (act.toolPick(tag.name)){ state.toolHolder=H; bringToFingers(TOOLS[tag.name].group, false); grabOffsets(H, TOOLS[tag.name].group); H.contact=null; } return; }
   if (tag.kind==='board'){ if (act.boardPick(H)) boardStartOffset(H); return; }
   tap(tag, H);
 }
@@ -3392,6 +3491,7 @@ function updateDimmPush(){
   }
 }
 function handPinchEnd(H){
+  if (state.screw===H){ act.dropScrew(); return; }
   H.lastPart = performance.now()+300;   // no poke right after letting go of a part
   if (state.rigHolder===H) return endRigMove();
   if (state.boardHeld===H || state.boardHeld2===H) return boardLetGo(H);
@@ -3485,6 +3585,8 @@ function signToMe(){
 }
 function endRigMove(){ state.rigHolder=null; rigGrab=null; RIG_CUSTOM[rigAt]={p:rig.position.clone(), ry:rig.rotation.y}; say('Sign placed. It stays here for this area.','ok'); }
 function handHold(H){
+  if (state.screw===H){ heldScrew.position.copy(_gp); heldScrew.quaternion.identity();
+    for (const [n,sc] of Object.entries(brdScrews)){ if (sc.placed) continue; sc.holeHit.getWorldPosition(_b); if (_b.distanceTo(_gp)<0.02){ act.placeBrdScrew(+n); break; } } return; }
   if (state.rigHolder===H){ moveRig(H); return; }
   if (state.boardHeld===H || state.boardHeld2===H) return;   // the board follows both grips in updateBoardHold
   if (state.held && state.holder===H){
@@ -3608,7 +3710,6 @@ function updateHands(hov){
     const gap=_a.distanceTo(_b); _gp.copy(_a).add(_b).multiplyScalar(0.5);
     // once a pinch closes, the grip point rides with the wrist: pressing harder or softer moves the fingertips, not the part
     W.updateWorldMatrix(true,false);
-    if (H.pinching && H.gripW) _gp.copy(H.gripW).applyMatrix4(W.matrixWorld);   // the grip point taken at the pinch rides with the hand: loosening the fingers does not drag the part
     // while the fingers of a pinching hand open, its grip point stays put (a two-hand hold does not jump either)
     if (!H.gp || !(H.pinching && (H.native ? H.endT : gap>PINCH_OFF))){ (H.gp ||= new THREE.Vector3()).copy(_gp); (H.gq ||= new THREE.Quaternion()).copy(_wq); }
     if (state.calibrating) showCal(_gp);
@@ -3619,11 +3720,11 @@ function updateHands(hov){
       const near = !state.calibrating ? nearestTag(_gp) : null; let btn=false;
       if (!near){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn'){ runBtn(t.action); btn=true; } }
       if (!btn){ beginHandPinch(H); if (H.endPend){ H.endT=H.endPend; H.endPend=null; } } }
-    if (H.native){ if (H.pinching && H.endT && performance.now()-H.endT>=PINCH_HOLD_MS) endHandPinch(H); }
+    if (H.native){ if (H.pinching && H.endT) endHandPinch(H); }   // let go as soon as the pinch opens
     else if (!H.pinching && gap<PINCH_ON){ H.pinching=true; H.gripW=_gp.clone().applyMatrix4(_wInv.copy(W.matrixWorld).invert()); handPinchStart(H); }
     else if (H.pinching && gap>PINCH_OFF){ const now=performance.now(); H.openT ??= now; if (now-H.openT>=PINCH_HOLD_MS){ H.pinching=false; H.openT=null; handPinchEnd(H); } }
     else if (H.pinching) H.openT=null;
-    if (H.pinching){ if (!H.openT && !H.endT) handHold(H); }   // while the fingers open, the part stays where it was: no jump when you let go   // while the fingers open, the part stays where it was: no jump when you let go
+    if (H.pinching){ if (!H.openT) handHold(H); }   // while the fingers open, the part stays where it was: no jump when you let go   // while the fingers open, the part stays where it was: no jump when you let go
     else { const t=nearestTag(_gp); H.cand=t; H.candT=performance.now(); matsFor(t).forEach(m=>hov.add(m)); pokeParts(H, tipPos); }
     pokeButtons(H, tipPos);
   }
@@ -3834,8 +3935,8 @@ const DEF = {
   ODD:{sym:'Optical drive not detected.', cause:{en:'SATA cable to the ODD missing or swapped', es:'Cable SATA al ODD faltante o cruzado', zh:'连接光驱的 SATA 线缺失或插错'}},
   COVER:{sym:'Cover open alarm.', cause:{en:'Top cover not latched, not locked or rear screws missing', es:'Tapa sin seguro, sin candado o sin los tornillos traseros', zh:'上盖未扣合、未上锁或缺少后部螺丝'}}
 };
-const SEND_STEP = {type:'send', title:'Send the board to station 2', text:'Review your board against the visual aid. When it is ready, press SEND BOARD. Nobody tells you if something is wrong: the power-on test at station 2 will.', hint:'',
-  es:{title:'Envía la tarjeta a la estación 2', text:'Revisa tu tarjeta contra la ayuda visual. Cuando esté lista, presiona ENVIAR TARJETA. Nadie te dice si algo está mal: lo dirá la prueba de encendido en la estación 2.', hint:''},
+const SEND_STEP = {type:'send', title:'Send the board to station 2', text:'Review your board against the work instruction. When it is ready, press SEND BOARD. Nobody tells you if something is wrong: the power-on test at station 2 will.', hint:'',
+  es:{title:'Envía la tarjeta a la estación 2', text:'Revisa tu tarjeta contra la instrucción de trabajo. Cuando esté lista, presiona ENVIAR TARJETA. Nadie te dice si algo está mal: lo dirá la prueba de encendido en la estación 2.', hint:''},
   zh:{title:'将主板发送到工位 2', text:'对照图示检查你的主板。准备好后按“发送主板”。没有人会告诉你哪里有问题：工位 2 的通电测试会显示结果。', hint:''}};
 const WAIT_STEP = {type:'lineWait', title:'Wait for a board from station 1', text:'The next board arrives on your bench when station 1 sends it. Get your station ready while you wait.', hint:'',
   es:{title:'Espera una tarjeta de la estación 1', text:'La siguiente tarjeta llega a tu mesa cuando la estación 1 la envía. Prepara tu estación mientras esperas.', hint:''},
@@ -3914,10 +4015,12 @@ function lineWrap(){
   W('tightenLc', n => { const i=lineFirstOf(s=>s.type==='lcScrews'); return lineAt(i, ()=>ACT0.tightenLc(n)); });
   W('tightenLid', n => { const i=lineFirstOf(s=>s.type==='lidScrews'); return lineAt(i, ()=>ACT0.tightenLid(n)); });
   W('tightenBrd', n => { const i=lineFirstOf(s=>s.type==='brdScrews'); return lineAt(i, ()=>ACT0.tightenBrd(n)); });
+  W('takeScrew', h => { const i=lineFirstOf(s=>s.type==='brdPlace'); return lineAt(i, ()=>ACT0.takeScrew(h)); });
+  W('placeBrdScrew', n => { const i=lineFirstOf(s=>s.type==='brdPlace'); return lineAt(i, ()=>ACT0.placeBrdScrew(n)); });
   W('lidLatch', () => { if (Q.lid.state!=='seated') return; const i=lineFirstOf(s=>s.type==='lidLatch'); return lineAt(i, ()=>ACT0.lidLatch()); });
   W('dimmEnter', (slotId, rev) => { lineTouch(); const i=lineFirstOf(s=>s.type==='insert' && s.slot===slotId); if (i==null) return false; return lineAt(i, ()=>ACT0.dimmEnter(slotId, rev)); });
   W('dimmSeated', slotId => { const i=lineFirstOf(s=>s.type==='insert' && s.slot===slotId); if (i==null){ const sl=S[slotId]; if (sl.entry){ const d=sl.entry.d; sl.entry=null; d.state='seated'; sl.open=false; d.group.position.set(sl.x, BOARD_TOP+SEAT_BOT, 0); d.group.quaternion.setFromEuler(new THREE.Euler(0, Math.PI/2, 0)); } return true; } return lineAt(i, ()=>ACT0.dimmSeated(slotId)); });
-  W('press', id => { const d=OBJ(id); if (!d || d.state!=='ajar') return false; lineTouch(); const i=lineFirstOf(s=>s.type===({fan:'fans', riser:'risers'})[d.kind]); return lineAt(i, ()=>ACT0.press(id)); });
+  W('press', id => { const d=OBJ(id); if (!d || d.state!=='ajar') return false; lineTouch(); const i=lineFirstOf(s=>s.type===({fan:'fans', riser:'risers', hdd:'hdd'})[d.kind]); return lineAt(i, ()=>ACT0.press(id)); });
   W('latch', slotId => { const sl=S[slotId]; lineTouch();
     if (sl.occupied){ if (sl.ajar) lineReseat(slotId); return; }
     const i=lineFirstOf(s=>s.type==='latch' && s.slot===slotId); return lineAt(i, ()=>ACT0.latch(slotId)); });
@@ -4182,8 +4285,8 @@ function partnerBuild(){
   // in full VR the partner table is drawn too (in passthrough the real table is there)
   const tt=tableTop.clone(); tt.raycast=()=>{}; const lg=legs.clone(); lg.traverse(o=>{ o.raycast=()=>{}; }); g.add(tt, lg); PARTNER.table=[tt, lg];
   // a sign over the partner station: which station, which unit, what step
-  const c=document.createElement('canvas'); c.width=768; c.height=200; const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace;
-  const lab=new THREE.Mesh(new THREE.PlaneGeometry(0.42,0.11), new THREE.MeshBasicMaterial({map:t, transparent:true, depthWrite:false})); lab.raycast=()=>{};
+  const c=document.createElement('canvas'); c.width=1536; c.height=400; const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=8;
+  const lab=new THREE.Mesh(new THREE.PlaneGeometry(0.52,0.135), new THREE.MeshBasicMaterial({map:t, transparent:true, depthWrite:false})); lab.raycast=()=>{};
   lab.position.set(0, TABLE_Y+0.42, -0.1); g.add(lab); PARTNER.label={mesh:lab, canvas:c, tex:t};
 }
 const _pz=new THREE.Matrix4().makeScale(0,0,0);
@@ -4204,13 +4307,13 @@ function partnerShow(v){
   p.lid.visible = two && v?.lid==='1';
 }
 function partnerLabel(st){
-  const L=PARTNER.label, g=L.canvas.getContext('2d'), W=768, H=200, s=st?.view?.s || (3-LINE.role);
+  const L=PARTNER.label, g=L.canvas.getContext('2d'); g.setTransform(2,0,0,2,0,0); const W=768, H=200, s=st?.view?.s || (3-LINE.role);
   const sig=[state.lang, s, st?.unit, st?.step, st?.waiting, LINE.net.queue, PARTNER.placing].join('|'); if (sig===PARTNER.lsig) return; PARTNER.lsig=sig;
-  g.clearRect(0,0,W,H); g.fillStyle='rgba(18,22,25,0.82)'; roundRect(g,4,4,W-8,H-8,18); g.fill();
-  g.fillStyle='#f2b134'; g.font='700 54px "Barlow Condensed", "Arial Narrow", sans-serif'; g.textBaseline='middle';
+  g.clearRect(0,0,W,H); g.fillStyle='rgba(14,18,20,0.92)'; roundRect(g,4,4,W-8,H-8,18); g.fill();
+  g.fillStyle='#78BE20'; g.font='700 58px "Barlow Condensed", "Arial Narrow", sans-serif'; g.textBaseline='middle';
   const head = LT('st', s) + (st?.unit!=null ? ' · '+LT('unit', st.unit) : '') + (s===2 && LINE.net.queue ? ` · ${LT('wip')} ${LINE.net.queue}` : '');
   g.fillText(head, 28, 62);
-  g.fillStyle='#e7ecef'; g.font='500 40px "Barlow Condensed", "Arial Narrow", sans-serif';
+  g.fillStyle='#ffffff'; g.font='600 42px "Barlow Condensed", "Arial Narrow", sans-serif';
   const sub = PARTNER.placing ? trMsg('Touch the partner table to place it here.') : st ? (st.waiting ? LT('waiting') : (st.step || '')) : LT('offline');
   const lines=wrap(g, sub, W-56).slice(0,2); lines.forEach((ln,i)=>g.fillText(ln, 28, 122+i*44));
   L.tex.needsUpdate=true;
@@ -4376,6 +4479,7 @@ function lineFromWelcome(){
 reset();
 document.fonts?.ready.then(()=>{ syncUI(); showTour(); });
 window.__trainer = { PARTNER, partnerFrame, partnerPlaceToggle, partnerFix, partnerTurn, lineView, HAND_DOTS, lineVirtual, LINE, lineStart, lineButton, lineSend, lineTest, lineReceive, lineEndShift, lineStats, lineDefects1, lineDefects2, lineStatus, lineUnitReset, fastBuild, flushAnims, sockNext, DEF, LINE_STEPS, lineNet, lineTick, pinchHold:(ms)=>{ PINCH_HOLD_MS=ms; }, facingYaw, legs, calRing, riserG, voiceTexts, speak, voiceKeys:()=>Object.keys(VOICE).length, get STEPS(){ return STEPS; }, get PH_RANGE(){ return PH_RANGE; }, get PH_STD(){ return PH_STD; }, BTN, lcScrews, DRIVES, firstTag, hits, rayFrom, msgSeen:()=>[...MSG_SEEN], setLang:(l)=>{ state.lang=l; }, updateSWI, swiSpec, swiCanvas, swiPanel, trMsg, untranslated:()=>[..._untr], phaseStats, phaseTime, resultLines, verdict, MSG, updateBoardHold, boardLetGo,learnTouch, LEARN, screwSound, SND, HANDS, updateHands, state, act, S, D, P, Q, CAB, HDR, CLIPS, TARGETS, BRD, FANS, PSUS, lidScrews, TOOLS, SK, SLOT_DEFS, LID_Y, inSock, camera, controls, station, esd, WEAR, renderer, poseOf, boardPivot, board, THREE, placeAt, hdrPos, setStation, camBusy:()=>!!camAnim, runBtn, signToMe, getAnchor:()=>stationAnchor, PERF, frameErr:()=>!!frameStep.warned, calRing, tryPlaceAt, headPos, ctrls, driverContact, anchorStation, followAnchor, panelCanvas, drawPanel, arrowFrom, arrowTo, stepWants, nearestTag, magnet, RIG_CUSTOM, rig, TOUR, tourLabels, pasteAt, endStroke, rig};
-Object.assign(window.__trainer, {SND, DIMM_L, DIMM_H, SEAT_BOT, updateDimmPush, ENTRY_BOT, SEAT_TRAVEL, brdScrews, lidLatchG, lidLockG, RISERS, CABLE_SLOTS, CABLE_IDS, shuffleSequences, PSUS, BSCREW_DOWN});
+Object.assign(window.__trainer, {panelCanvas, drawPanel, sbinG, heldScrew, brdPlacedN, SND, DIMM_L, DIMM_H, SEAT_BOT, updateDimmPush, ENTRY_BOT, SEAT_TRAVEL, brdScrews, lidLatchG, lidLockG, RISERS, CABLE_SLOTS, CABLE_IDS, shuffleSequences, PSUS, BSCREW_DOWN});
 </script>
+
 </body></html>
