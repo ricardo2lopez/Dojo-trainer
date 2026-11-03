@@ -3251,8 +3251,9 @@ function placeAt(world){
 function onSelectStart(C){
   C.lastSelect=performance.now();
   if (state.mode==='learn' && !C.isHand && !state.calibrating){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn') runBtn(t.action); else if (t?.kind==='rig') startRigMove(C, t.point); else learnTouch(t); return; }
-  if (C.isHand){ const H=HANDS[C.idx]; if (!H) return; H.native=true; H.endT=null; H.endPend=null;
-    if (!H.pinching) H.selC=C;   // handled in the next hand update, with the fingers where they are now; a short glitch while pinching keeps the part
+  if (C.isHand){ const H=HANDS[C.idx]; if (!H) return;
+    // the hands pinch by the distance between thumb and index (updateHands); the headset pinch only presses a sign button by ray, when no part is lit at the fingers
+    if (!H.pinching && !H.cand && !state.calibrating && !PARTNER.placing){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn') runBtn(t.action); }
     return; }
   if (PARTNER.placing){ rayFrom(C.c); const bt=firstTag(hits()); if (bt?.kind==='btn'){ runBtn(bt.action); return; } C.c.updateMatrixWorld(); partnerFix(new THREE.Vector3().setFromMatrixPosition(C.c.matrixWorld)); return; }
   if (state.calibrating){
@@ -3283,7 +3284,7 @@ function onSelectStart(C){
   tap(tag, C);
 }
 function onSelectEnd(C){
-  if (C.isHand){ const H=HANDS[C.idx]; if (H?.pinching) H.endT=performance.now(); else if (H?.selC) H.endPend=performance.now(); return; }   // let go after PINCH_HOLD_MS, unless the pinch comes back
+  if (C.isHand) return;   // the hands let go by the finger distance (updateHands)
   if (state.rigHolder===C) return endRigMove();
   if (state.boardHeld===C || state.boardHeld2===C) return boardLetGo(C);
   if (!(state.held && state.holder===C)) return;
@@ -3359,8 +3360,8 @@ for (let i=0;i<2;i++){
   HANDS.push(H);
 }
 const _a=new THREE.Vector3(), _b=new THREE.Vector3(), _gp=new THREE.Vector3(), _wq=new THREE.Quaternion(), _bx=new THREE.Box3(), _hm=new THREE.Matrix4(), ONE=new THREE.Vector3(1,1,1);
-const PINCH_ON=0.03, PINCH_OFF=0.055, REACH=0.05, _dl=new THREE.Vector3();
-let PINCH_HOLD_MS=60;    // the fingers must stay open this long to let go: a part is not dropped by a tracking glitch
+const PINCH_ON=0.022, PINCH_OFF=0.045, REACH=0.05, KEEP_R=0.018, _dl=new THREE.Vector3();
+let PINCH_HOLD_MS=120;    // the fingers must stay open this long to let go: a part is not dropped by a tracking glitch
 function nearestTag(p){
   // closest pickable within reach of the pinch point. What the current step needs wins when it is close,
   // so a pinch in a crowded area (latches, DIMM slots) takes the right part. The board and the sign only count when nothing else is near.
@@ -3370,8 +3371,8 @@ function nearestTag(p){
   for (const o of pickables){
     const u=o.userData; if (!u.kind || u.kind==='btn' || !pickOK(o, true, false)) continue;
     o.updateWorldMatrix(true,false); let d, thr=GRAB_R_CTL;
-    if (u.kind==='dimm' && D[u.dimm]){ const l=D[u.dimm].group.worldToLocal(_dl.copy(p)); const ox=Math.max(0,Math.abs(l.x)-DIMM_L/2), oy=l.y>DIMM_H ? l.y-DIMM_H : (l.y<0 ? -l.y : 0); d=Math.hypot(Math.max(0,Math.abs(l.z)-0.0015), ox, oy); thr=GRAB_R_DIMM; }
-    else if ((u.kind==='part' || u.kind==='tool') && grabGroup(u)){ d=surfDist(grabGroup(u), p); thr=GRAB_R; }
+    if (u.kind==='dimm' && D[u.dimm]){ d=dimmDist(D[u.dimm], p); thr=GRAB_R_DIMM; }
+    else if ((u.kind==='part' || u.kind==='tool') && grabGroup(u)){ d=partDist(grabGroup(u), p); thr=GRAB_R; }
     else { _bx.setFromObject(o); d=_bx.distanceToPoint(p); }
     if (u.kind==='board'){ if (d<0.012) brd={...u, point:p.clone(), obj:o}; if (!(stepWants(u) && d<wd && d<0.03)) continue; }
     if (u.kind!=='board' && u.kind!=='rig' && d>=thr) continue;
@@ -3391,9 +3392,27 @@ function nearestTag(p){
   if (ctrl && want && !['latch','lever','plate'].includes(want.kind)) return ctrl;
   return want || best || brd || sign;
 }
-const GRAB_R=0.008, GRAB_R_DIMM=0.005, GRAB_R_CTL=0.012;
+// a flat part (CPU, heatsink) is pinched with the fingertip joints about a centimetre off its surface: 12 mm for parts, 6 mm for a DIMM plane
+const GRAB_R=0.012, GRAB_R_DIMM=0.006, GRAB_R_CTL=0.012;
 const grabGroup = u => u.kind==='tool' ? TOOLS[u.name]?.group : (u.id==='board' ? null : OBJ(u.id)?.group);
 const _sl=new THREE.Vector3(), _sc=new THREE.Vector3();
+// the outline of a part in its own frame (visible meshes, labels and hit boxes left out), as in the rack assembly
+function partBox(g){
+  if (g.userData.lbb) return g.userData.lbb;
+  const bb=new THREE.Box3(), inv=new THREE.Matrix4(); g.updateWorldMatrix(true,true); inv.copy(g.matrixWorld).invert();
+  g.traverse(m=>{ if (!m.isMesh || !m.visible || !m.geometry || m.userData.kind || m.isSprite) return; if (!m.geometry.boundingBox) m.geometry.computeBoundingBox(); bb.union(m.geometry.boundingBox.clone().applyMatrix4(new THREE.Matrix4().multiplyMatrices(inv, m.matrixWorld))); });
+  if (!bb.isEmpty()) g.userData.lbb=bb; return bb;
+}
+function partDist(g, p){ const bb=partBox(g); if (bb.isEmpty()) return Infinity; g.updateWorldMatrix(true,false); return bb.distanceToPoint(g.worldToLocal(_sl.copy(p))); }
+function dimmDist(d, p){ const l=d.group.worldToLocal(_dl.copy(p)); const ox=Math.max(0,Math.abs(l.x)-DIMM_L/2), oy=l.y>DIMM_H ? l.y-DIMM_H : (l.y<0 ? -l.y : 0); return Math.hypot(Math.max(0,Math.abs(l.z)-0.0015), ox, oy); }
+// distance from the pinch point to what a tag stands for
+function tagDist(t, p){
+  if (!t) return Infinity;
+  if (t.kind==='dimm' && D[t.dimm]) return dimmDist(D[t.dimm], p);
+  if ((t.kind==='part' || t.kind==='tool') && grabGroup(t)) return partDist(grabGroup(t), p);
+  if (t.obj){ t.obj.updateWorldMatrix(true,false); _bx.setFromObject(t.obj); return _bx.distanceToPoint(p); }
+  return Infinity;
+}
 // distance from a point to the real surface of a part: the closest of its visible meshes (each one in its own frame)
 function surfDist(g, p){
   let best=Infinity;
@@ -3437,7 +3456,8 @@ function handPinchStart(H){
   if (state.boardHeld && state.boardHeld!==H && !state.boardHeld2 && typeof state.boardHeld==='object' && nearestTag(_gp)?.kind==='board'){ boardSecondHand(H); return; }
   if (state.held || state.tool || state.boardHeld || state.rigHolder){ if (nearestTag(_gp)) say('Your other hand is busy. Put down what you hold first.'); return; }
   H.dh=null;
-  const t0 = nearestTag(_gp);   // the pinch point decides: only what the fingers touch
+  // what is lit at the fingers is what the pinch takes (kept while the pinch point stays within 1.5 cm of it)
+  const t0 = (H.cand && H.cand.obj && pickOK(H.cand.obj,true,false) && tagDist(H.cand,_gp)<KEEP_R) ? H.cand : nearestTag(_gp);
   if (t0?.kind==='sbin'){ act.takeScrew(H); return; }
   LINE.pinchY = board.worldToLocal(_gp.clone()).y - BOARD_TOP; LINE.pinchT = performance.now();
   if (t0?.kind==='rig'){ startRigMove(H, _gp.clone()); return; }
@@ -3503,7 +3523,14 @@ function handPinchEnd(H){
 const TIP = { syringe:new THREE.Vector3(0,0,-0.049), driver:new THREE.Vector3(0,0,-0.068) };
 // tools are held upright like the real ones: tip straight down, the grip between the fingers
 const GRIP = { syringe:new THREE.Vector3(0,0,0.022), driver:new THREE.Vector3(0,0,0.05) };
-const _qDown = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2,0,0)), _qy=new THREE.Quaternion(), _fw=new THREE.Vector3(), _sq=new THREE.Quaternion();
+const _NEGZ = new THREE.Vector3(0,0,-1), _qDown = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2,0,0)), _qy=new THREE.Quaternion(), _fw=new THREE.Vector3(), _sq=new THREE.Quaternion();
+function holdToolHand(gripWorld, handQ){
+  const t=TOOLS[state.tool].group;
+  _fw.set(0,0,-1).applyQuaternion(handQ).normalize(); _qy.setFromUnitVectors(_NEGZ, _fw);
+  const w=gripWorld.clone().sub(GRIP[state.tool].clone().applyQuaternion(_qy));
+  t.position.copy(station.worldToLocal(w));
+  station.getWorldQuaternion(_sq); t.quaternion.copy(_sq.invert().multiply(_qy));
+}
 function holdToolVertical(gripWorld, handQ){
   const t=TOOLS[state.tool].group;
   _fw.set(0,0,-1).applyQuaternion(handQ); const yaw=Math.atan2(-_fw.x, -_fw.z);
@@ -3606,7 +3633,7 @@ function handHold(H){
     return;
   }
   if (state.tool && state.toolHolder===H){
-    const tool=TOOLS[state.tool]; holdToolVertical(_gp, _wq);
+    const tool=TOOLS[state.tool]; if (state.tool==='driver') holdToolHand(_gp, _wq); else holdToolVertical(_gp, _wq);
     const tip = tool.group.localToWorld(TIP[state.tool].clone());
     if (state.tool==='syringe'){ pasteContact(tip); return; }
     driverContact(H, tip);
@@ -3715,17 +3742,16 @@ function updateHands(hov){
     if (state.calibrating) showCal(_gp);
     if (PARTNER.placing && !H.pinching) partnerPreview(_gp);
     const tipPos=_b.clone();
-    if (H.selC){ const C=H.selC; H.selC=null;
-      // a part at the fingers wins; with nothing at the fingers the ray presses a panel button
-      const near = !state.calibrating ? nearestTag(_gp) : null; let btn=false;
-      if (!near){ rayFrom(C.c); const t=firstTag(hits()); if (t?.kind==='btn'){ runBtn(t.action); btn=true; } }
-      if (!btn){ beginHandPinch(H); if (H.endPend){ H.endT=H.endPend; H.endPend=null; } } }
-    if (H.native){ if (H.pinching && H.endT) endHandPinch(H); }   // let go as soon as the pinch opens
-    else if (!H.pinching && gap<PINCH_ON){ H.pinching=true; H.gripW=_gp.clone().applyMatrix4(_wInv.copy(W.matrixWorld).invert()); handPinchStart(H); }
-    else if (H.pinching && gap>PINCH_OFF){ const now=performance.now(); H.openT ??= now; if (now-H.openT>=PINCH_HOLD_MS){ H.pinching=false; H.openT=null; handPinchEnd(H); } }
+    H.native=false;
+    if (!H.pinching && gap<PINCH_ON){ H.pinching=true; H.gripW=_gp.clone().applyMatrix4(_wInv.copy(W.matrixWorld).invert()); handPinchStart(H); }
+    else if (H.pinching && gap>PINCH_OFF){ const now=performance.now(); H.openT ??= now; if (now-H.openT>=PINCH_HOLD_MS) endHandPinch(H); }
     else if (H.pinching) H.openT=null;
     if (H.pinching){ if (!H.openT) handHold(H); }   // while the fingers open, the part stays where it was: no jump when you let go   // while the fingers open, the part stays where it was: no jump when you let go
-    else { const t=nearestTag(_gp); H.cand=t; H.candT=performance.now(); matsFor(t).forEach(m=>hov.add(m)); pokeParts(H, tipPos); }
+    else {
+      // the part lit at the fingers stays chosen while the pinch point is within 1.5 cm of it, so closing the fingers does not lose it
+      let t=nearestTag(_gp);
+      if (H.cand && H.cand!==t && H.cand.obj && pickOK(H.cand.obj,true,false) && tagDist(H.cand,_gp)<KEEP_R && !(t && tagDist(t,_gp)<0.001)) t=H.cand;
+      H.cand=t; H.candT=performance.now(); matsFor(t).forEach(m=>hov.add(m)); pokeParts(H, tipPos); }
     pokeButtons(H, tipPos);
   }
 }
@@ -4479,7 +4505,7 @@ function lineFromWelcome(){
 reset();
 document.fonts?.ready.then(()=>{ syncUI(); showTour(); });
 window.__trainer = { PARTNER, partnerFrame, partnerPlaceToggle, partnerFix, partnerTurn, lineView, HAND_DOTS, lineVirtual, LINE, lineStart, lineButton, lineSend, lineTest, lineReceive, lineEndShift, lineStats, lineDefects1, lineDefects2, lineStatus, lineUnitReset, fastBuild, flushAnims, sockNext, DEF, LINE_STEPS, lineNet, lineTick, pinchHold:(ms)=>{ PINCH_HOLD_MS=ms; }, facingYaw, legs, calRing, riserG, voiceTexts, speak, voiceKeys:()=>Object.keys(VOICE).length, get STEPS(){ return STEPS; }, get PH_RANGE(){ return PH_RANGE; }, get PH_STD(){ return PH_STD; }, BTN, lcScrews, DRIVES, firstTag, hits, rayFrom, msgSeen:()=>[...MSG_SEEN], setLang:(l)=>{ state.lang=l; }, updateSWI, swiSpec, swiCanvas, swiPanel, trMsg, untranslated:()=>[..._untr], phaseStats, phaseTime, resultLines, verdict, MSG, updateBoardHold, boardLetGo,learnTouch, LEARN, screwSound, SND, HANDS, updateHands, state, act, S, D, P, Q, CAB, HDR, CLIPS, TARGETS, BRD, FANS, PSUS, lidScrews, TOOLS, SK, SLOT_DEFS, LID_Y, inSock, camera, controls, station, esd, WEAR, renderer, poseOf, boardPivot, board, THREE, placeAt, hdrPos, setStation, camBusy:()=>!!camAnim, runBtn, signToMe, getAnchor:()=>stationAnchor, PERF, frameErr:()=>!!frameStep.warned, calRing, tryPlaceAt, headPos, ctrls, driverContact, anchorStation, followAnchor, panelCanvas, drawPanel, arrowFrom, arrowTo, stepWants, nearestTag, magnet, RIG_CUSTOM, rig, TOUR, tourLabels, pasteAt, endStroke, rig};
-Object.assign(window.__trainer, {panelCanvas, drawPanel, sbinG, heldScrew, brdPlacedN, SND, DIMM_L, DIMM_H, SEAT_BOT, updateDimmPush, ENTRY_BOT, SEAT_TRAVEL, brdScrews, lidLatchG, lidLockG, RISERS, CABLE_SLOTS, CABLE_IDS, shuffleSequences, PSUS, BSCREW_DOWN});
+Object.assign(window.__trainer, {tagDist, partBox, partDist, panelCanvas, drawPanel, sbinG, heldScrew, brdPlacedN, SND, DIMM_L, DIMM_H, SEAT_BOT, updateDimmPush, ENTRY_BOT, SEAT_TRAVEL, brdScrews, lidLatchG, lidLockG, RISERS, CABLE_SLOTS, CABLE_IDS, shuffleSequences, PSUS, BSCREW_DOWN});
 </script>
 
 </body></html>
